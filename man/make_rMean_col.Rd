@@ -18,6 +18,5 @@ pre-filled function
 Pre-filled rolling mean function. This function should not be directly used, it is used inside of auto_make_rMean_col() .
 }
 \examples{
-
 #none
 }

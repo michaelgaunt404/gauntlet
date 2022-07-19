@@ -8,7 +8,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' #none
 make_lag_col = function(lags = c(1, 7)){
   purrr::map(lags, ~purrr::partial(dplyr::lag, n = .x))
@@ -25,7 +24,6 @@ make_lag_col = function(lags = c(1, 7)){
 #' @export
 #'
 #' @examples
-#'
 #' data.frame(index = 1:10,
 #' value1 = rnorm(10), value2 = rnorm(10)) %>%
 #' mutate(auto_make_lag_col(col = value1, c(1, 3, 5)))
@@ -45,7 +43,6 @@ auto_make_lag_col = function(col, lags = c(1, 7)){
 #' @export
 #'
 #' @examples
-#'
 #' data.frame(index = 1:10,
 #'           value1 = rnorm(10), value2 = rnorm(10)) %>%
 #'  mutate(value1_differenced = make_diff(col = index, c(1), percent = F)) %>%
@@ -69,7 +66,6 @@ make_diff = function(col, lags, percent = F){
 #' @export
 #'
 #' @examples
-#'
 #' #none
 make_diff_col = function(lags = c(1, 7), percent = F){
   purrr::map(lags, ~purrr::partial(make_diff, lags = .x, percent = percent))
@@ -87,7 +83,6 @@ make_diff_col = function(lags = c(1, 7), percent = F){
 #' @export
 #'
 #' @examples
-#'
 #' data.frame(index = 1:10,
 #'           value1 = rnorm(10), value2 = rnorm(10)) %>%
 #'  mutate(auto_make_diff_col(col = value1, percent = T))
@@ -109,11 +104,9 @@ make_diff_col = function(lags = c(1, 7), percent = F){
 #' @export
 #'
 #' @examples
-#'
 #' #none
+# TODO can only perform equal weight for now
 make_rMean_col = function(width, equal){
-  #can only perform equal weight for now
-
   purrr::map(width,
              ~purrr::partial(
                roll::roll_mean,
@@ -144,3 +137,155 @@ make_rMean_col = function(width, equal){
 auto_make_rMean_col = function(col, width = c(7)){
   dplyr::across({{col}}, make_rMean_col(width = width, equal = 2), .names = "{.col}_rMean_{width}")
 }
+
+
+#' Make rolling zscore attribute from timeseries.
+#'
+#' @param data a dataframe containing the timeseries attribute
+#' @param grp character list of attributes to group by
+#' @param width integer value indicating widtch of window
+#' @param align character indicating which side of value window will be aligned. Default is `right`, which only uses past values. Other options are `center` and `left`.
+#' @param threshold integer indicating zscore away from center function will flag value as an outlier
+#'
+#' @return a dataframe with zcore and zscore_flag attributes
+#' @export
+#'
+#' @examples
+#'data.frame(index = 1:60, value = c(rnorm(50, 10, 3), rnorm(10, 25, 0))) %>%
+#'  na.omit() %>%
+#'  ts_zscore(width = 30)
+#'
+#'c(10, 30) %>%
+#'  map(~data.frame(index = 1:60
+#'                  ,value = c(rnorm(50, 10, 3), rnorm(10, 25, 0))) %>%
+#'        na.omit() %>%
+#'        ts_zscore(width = .x)) %>%
+#'  reduce(bind_rows)
+ts_zscore = function(data, grp = NULL, width = 7
+                     ,align = "right", threshold = 3){
+
+  tmp = data %>%
+    { if (!is.null(grp)) (.) %>%
+        group_by(across({{grp}}))
+      else .} %>%
+    mutate(tmp_med = zoo::rollapply(value, width = width,fill = NA, align = align, mean)
+           ,tmp_sd = zoo::rollapply(value, width = width,fill = NA, align = align, sd)) %>%
+    ungroup() %>%
+    mutate(
+      window_used = width,
+      threshold_used = threshold,
+      zscore = (value-tmp_med)/tmp_sd) %>%
+    select(!c(tmp_med, tmp_sd))
+
+  if (!is.null(threshold)){
+    tmp = tmp %>%
+      mutate(zscore_flag = case_when(
+        abs(zscore) < threshold ~ str_glue("Under {threshold}sd threshold"),
+        T~str_glue("Over {threshold}sd threshold")) %>%
+          as.factor(),
+        zscore_flag_num = case_when(
+          abs(zscore) < threshold ~ 0,
+          T~1)
+      )
+  }
+
+  return(tmp)
+}
+
+#' Make MAD (median absolute deviation) values.
+#'
+#' Function computes MAD statistic(s) for numeric vector. All values in vector are used to create MAD statistic. MAD values for all or last entry alone can be returned.
+#'
+#' @param values vector of numeric values to MAD.
+#' @param last boolean - determines if last value should only be returned. Default is `FALSE`.
+#'
+#' @return returns a single MAD value for the last value in vector
+#' @export
+#'
+#' @examples
+#'numeric_vector = c(rnorm(10, 10, 3), 100)
+#'
+#'roll_mad(numeric_vector)
+#'
+#'roll_mad(numeric_vector, last = T)
+#'
+#'#compare to zscore
+#'scale(numeric_vector)[,1]
+# TODO should be able to pick tail, head, or centered for window alignment
+roll_mad = function(values, last = F){
+  ((abs(values-median(values, na.rm = T)))/
+     median(abs(values-median(values, na.rm = T)), na.rm = T)) %>%
+    { if (last) (.) %>%
+        tail(1)
+      else .}
+}
+
+#' Make rolling MAD (median absolute deviation) values for dataframe attribute.
+#'
+#' @param data a data frame with a timerseries attribute - attribute must be named value to work
+#' @param window an integer indicating width of window
+#'
+#' @return a dataframe with rolling MAD statistic attribute
+#' @export
+#'
+#' @examples
+#'test_data = data.frame(index = 1:53,
+#'                       value = c(rnorm(25, 10, 3)
+#'                                 ,rnorm(3, 100, 3)
+#'                                 ,rnorm(25, 10, 3)))
+#'test_data %>%
+#'  ts_mad(window = 7)
+ts_mad = function(data, window = 20){
+
+  data = data %>%
+    mutate(index_forced = row_number())
+
+  temp_list = list()
+  for (i in 1:(nrow(data)-window)){
+
+    #make window subset
+    temp_df = data[i:(i+window),]
+
+    #make distance matrix for window
+    window_values = temp_df %>%
+      pull(value)
+
+    temp_list[[i]] = temp_df %>%
+      tail(1) %>%
+      mutate(mad_value = roll_mad(window_values, last = T))
+
+  }
+
+  #collapses summary list objects
+  temp_dffff =
+    temp_list %>%
+    data.table::rbindlist(fill=TRUE) %>%
+    select(!index_forced)
+
+
+  return(temp_dffff)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

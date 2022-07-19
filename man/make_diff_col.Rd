@@ -18,6 +18,5 @@ pre-filled function
 Pre-filled difference function. This function should not be directly used, it is used inside of auto_make_diff_col() .
 }
 \examples{
-
 #none
 }

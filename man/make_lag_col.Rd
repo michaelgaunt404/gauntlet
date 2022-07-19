@@ -16,6 +16,5 @@ pre-filled function
 Pre-filled lag function. This function should not be directly used, it is used inside of auto_make_lag_col function.
 }
 \examples{
-
 #none
 }

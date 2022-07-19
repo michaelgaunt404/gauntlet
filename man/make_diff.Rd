@@ -20,7 +20,6 @@ dataframe with differenced column
 Makes difference column from a dataframe column defined by the user using lags as defined by the user. Should not be used directly by user - it is better to use via auto_make_diff_col() function.
 }
 \examples{
-
 data.frame(index = 1:10,
           value1 = rnorm(10), value2 = rnorm(10)) \%>\%
  mutate(value1_differenced = make_diff(col = index, c(1), percent = F)) \%>\%
