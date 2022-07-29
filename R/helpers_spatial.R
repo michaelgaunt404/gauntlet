@@ -54,14 +54,14 @@
 
 #SECTION: LEAFLET PACKAGE=======================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-quick_leaflet = function(data, markers = F, lines = F, polys = F){
-  data %>%
-    leaflet() %>%
-    addTiles() %>%
-    { if (markers) (.) %>% addMarkers() else .} %>%
-    { if (lines) (.) %>% addPolylines() else .} %>%
-    { if (polys) (.) %>% addPolygons() else .}
-}
+# quick_leaflet = function(data, markers = F, lines = F, polys = F){
+#   data %>%
+#     leaflet() %>%
+#     addTiles() %>%
+#     { if (markers) (.) %>% addMarkers() else .} %>%
+#     { if (lines) (.) %>% addPolylines() else .} %>%
+#     { if (polys) (.) %>% addPolygons() else .}
+# }
 
 rescale_to = function(column, value){
   #helps rescale column to specific max value
