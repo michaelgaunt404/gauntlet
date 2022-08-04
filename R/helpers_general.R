@@ -29,10 +29,10 @@ alert_me = function(){
 }
 
 #helper to make floor divides
-#generally used to make bins
-floor_divide = function(value, floor){
-  (value %/% floor)*floor
-}
+# #generally used to make bins
+# floor_divide = function(value, floor){
+#   (value %/% floor)*floor
+# }
 
 #plusEqual operator
 `%+=%` = function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
@@ -71,26 +71,26 @@ pretty_char = function(col){
     stringr::str_to_title(.)
 }
 
-dgt0 = function(x){
-  round(x, 0)
-}
+# dgt0 = function(x){
+#   round(x, 0)
+# }
+#
+# dgt1 = function(x){
+#   round(x, 1)
+# }
+#
+# dgt2 = function(x){
+#   round(x, 2)
+# }
+#
+# dgt3 = function(x){
+#   round(x, 3)
+# }
 
-dgt1 = function(x){
-  round(x, 1)
-}
-
-dgt2 = function(x){
-  round(x, 2)
-}
-
-dgt3 = function(x){
-  round(x, 3)
-}
-
-#corrects column to start with zero
-crrct0 = function(x){
-  x-x[1]
-}
+# #corrects column to start with zero
+# crrct0 = function(x){
+#   x-x[1]
+# }
 
 #function: changes negative to zero
 lmt0 = function(x){
@@ -181,33 +181,33 @@ modal = function(trigger, msg){
   })
 }
 
-#automates aggregating counts and percents for different groupings of data
-count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
-                                col = count, prefix = NULL,
-                                rnd = NULL, cntr_scl = FALSE){
-  #summarizing column has to be 'count'
-
-  tmp = data %>%
-    group_by(across({{grp_c}})) %>%
-    summarise(count = sum({{col}})) %>%
-    ungroup() %>%
-    group_by(across({{grp_p}})) %>%
-    mutate(percent = ({{col}}/sum({{col}})) %>%
-             { if (!is.null(rnd)) round(., rnd) else .}
-    ) %>%
-    ungroup() %>%
-    { if (cntr_scl) (.) %>%
-        group_by(across({{grp_z}})) %>%
-        mutate(zscore = as.vector(scale({{col}})))
-      else .}
-
-  if (is.null(prefix)){
-    tmp
-  } else {
-    newname1 = str_glue("{prefix}_count")
-    newname2 = str_glue("{prefix}_percent")
-    rename(tmp, !!newname1 := count, !!newname2 := percent)
-  }
-}
+# #automates aggregating counts and percents for different groupings of data
+# count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
+#                                 col = count, prefix = NULL,
+#                                 rnd = NULL, cntr_scl = FALSE){
+#   #summarizing column has to be 'count'
+#
+#   tmp = data %>%
+#     group_by(across({{grp_c}})) %>%
+#     summarise(count = sum({{col}})) %>%
+#     ungroup() %>%
+#     group_by(across({{grp_p}})) %>%
+#     mutate(percent = ({{col}}/sum({{col}})) %>%
+#              { if (!is.null(rnd)) round(., rnd) else .}
+#     ) %>%
+#     ungroup() %>%
+#     { if (cntr_scl) (.) %>%
+#         group_by(across({{grp_z}})) %>%
+#         mutate(zscore = as.vector(scale({{col}})))
+#       else .}
+#
+#   if (is.null(prefix)){
+#     tmp
+#   } else {
+#     newname1 = str_glue("{prefix}_count")
+#     newname2 = str_glue("{prefix}_percent")
+#     rename(tmp, !!newname1 := count, !!newname2 := percent)
+#   }
+# }
 
 #end

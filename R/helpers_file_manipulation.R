@@ -12,11 +12,11 @@
 #' @examples
 #' #none
 make_new_script = function(folder = "code", file_name = NULL){
-  folder_location = here::here("code")
-  file_location = here::here(str_glue("{folder}/{file_name}"))
+  folder_location = here::here(folder)
+  file_location = here::here(stringr::str_glue("{folder}/{file_name}"))
 
   stopifnot("Please provide a filename (include .r extentsion)..." = !is.null(file_name)
-            ,"Folder location does not exist, please make it first..." = exists(folder_location))
+            ,"Folder location does not exist, please make it first..." = !exists(folder_location))
 
   file.copy(
     system.file("scripts", "zz_emptyScriptTemplate_CODE.r", package="gauntlet")

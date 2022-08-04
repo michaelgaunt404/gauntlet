@@ -1,37 +1,103 @@
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# This is a utility script that holds custom functions
-#
-# By: mike gaunt, michael.gaunt@wsp.com
-#
-# README: script defines custom functions
-#-------- script defines custom functions
-#
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#helper to make pop up window to alert user
-alert_me = function(){
-  windows(bg = 'red', width = 100, height = 75);
 
-  data.frame(x = 0, y = 0, text = "ALERT: SCRIPT HAS COMPLETED") %>%
-    ggplot(aes(x, y, label = text)) + geom_label(size = 10) +
-    labs(x = "", y = "") +
-    theme(axis.text.x=element_blank(),
-          axis.ticks.x=element_blank(),
-          axis.text.y=element_blank(),
-          axis.ticks.y=element_blank(),
-          panel.border = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          plot.background = element_rect(fill = "red"),
-          panel.background = element_rect(fill = "red")
-    )
-}
 
-#helper to make floor divides
-#generally used to make bins
+#' Floor divide a vector by some value.
+#'
+#' This function can be applied to a vector to bin values by a floor divide value.
+#'
+#' @param value A numeric value or dataframe column to be floor divided
+#' @param floor A value to floor divide by
+#'
+#' @return A numeric value or vector
+#' @export
+#'
+#' @examples
+#'
+#' temp_index = rnorm(10, 100, 100)
+#' floor_divide(temp_index, 5)
+#' floor_divide(temp_index, 50)
+#' floor_divide(temp_index, 100)
 floor_divide = function(value, floor){
   (value %/% floor)*floor
+}
+
+#' Round to 0 digits
+#'
+#' Use this function to round a vector.
+#'
+#' @param x a numeric vector
+#'
+#' @return a numeric vector
+#' @export
+#'
+#' @examples
+#' dgt0(rnorm(10))
+dgt0 = function(x){
+  round(x, 0)
+}
+
+#' Round to 1 digits
+#'
+#' Use this function to round a vector.
+#'
+#' @param x a numeric vector
+#'
+#' @return a numeric vector
+#' @export
+#'
+#' @examples
+#' dgt1(rnorm(10))
+dgt1 = function(x){
+  round(x, 1)
+}
+
+#' Round to 2 digits
+#'
+#' Use this function to round a vector.
+#'
+#' @param x a numeric vector
+#'
+#' @return a numeric vector
+#' @export
+#'
+#' @examples
+#' dgt2(rnorm(10))
+dgt2 = function(x){
+  round(x, 2)
+}
+
+#' Round to 3 digits
+#'
+#' Use this function to round a vector.
+#'
+#' @param x a numeric vector
+#'
+#' @return a numeric vector
+#' @export
+#'
+#' @examples
+#' dgt3(rnorm(10))
+dgt3 = function(x){
+  round(x, 3)
+}
+
+#' Rescale a vector with first entry.
+#'
+#' Use this function to rescale a vector using the first entry
+#'
+#' @param x a numeric vector
+#'
+#' @return a numeric vector
+#' @export
+#'
+#' @examples
+#'data.frame(group = c(rep("A", 4), rep("B", 4))
+#'           ,order = c(1:4, 1:4)) %>%
+#'  mutate(value = 2*order+rnorm(8, 5)) %>%
+#'  group_by(group) %>%
+#'  mutate(value_corrected = crrct0(value))
+crrct0 = function(x){
+  x-x[1]
 }
 
 #plusEqual operator
@@ -71,26 +137,11 @@ pretty_char = function(col){
     stringr::str_to_title(.)
 }
 
-dgt0 = function(x){
-  round(x, 0)
-}
-
-dgt1 = function(x){
-  round(x, 1)
-}
-
-dgt2 = function(x){
-  round(x, 2)
-}
-
-dgt3 = function(x){
-  round(x, 3)
-}
 
 #corrects column to start with zero
-crrct0 = function(x){
-  x-x[1]
-}
+# crrct0 = function(x){
+#   x-x[1]
+# }
 
 #function: changes negative to zero
 lmt0 = function(x){
@@ -182,23 +233,46 @@ modal = function(trigger, msg){
 }
 
 #automates aggregating counts and percents for different groupings of data
+#' Group by count, sum, percent and zscore.
+#'
+#' This function can be used to perform a number of mathematical operation on a dataframe.
+#' Count or sum numerical values by group, get percent breakdown of counts or sums by group, and get optional zscore of values.
+#'
+#' @param data a dataframe
+#' @param grp_c a vector of columns to group counting operation with - do not quote columns
+#' @param grp_p a vector of columns to group percent calculation operation with - do not quote columns
+#' @param grp_z a vector of columns to group zscore calculation operation with - do not quote columns
+#' @param col a column to count or sum - do not quote column
+#' @param prefix a string used to prefix calculated columns with - leave empty if you do not want a prefix
+#' @param rnd integer indcating how many digits you want calculated columns to be rounded to - leave empty if you do not want rounding
+#' @param cntr_scl (`TRUE`/`FALSE`) boolean to indicate if zscore should be calculated - default is `FALSE`
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+#'temp_data = data.frame(group = c(rep("A", 4), rep("B", 4))
+#'                       ,order = c(1:4, 1:4)) %>%
+#'  mutate(value = 2*order+rnorm(8, 5)
+#'         ,count = 1)
+#'
+#'count_percent_zscore(temp_data, grp_c = c(group), grp_p = c(), col = count)
+#'
+#'count_percent_zscore(temp_data, grp_c = c(order), grp_p = c(), col = value)
 count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
-                                col = count, prefix = NULL,
-                                rnd = NULL, cntr_scl = FALSE){
-  #summarizing column has to be 'count'
-
+                                col , prefix = NULL, rnd = NULL, cntr_scl = FALSE){
   tmp = data %>%
     group_by(across({{grp_c}})) %>%
     summarise(count = sum({{col}})) %>%
     ungroup() %>%
     group_by(across({{grp_p}})) %>%
-    mutate(percent = ({{col}}/sum({{col}})) %>%
+    mutate(percent = (count/sum(count)) %>%
              { if (!is.null(rnd)) round(., rnd) else .}
     ) %>%
     ungroup() %>%
     { if (cntr_scl) (.) %>%
         group_by(across({{grp_z}})) %>%
-        mutate(zscore = as.vector(scale({{col}})))
+        mutate(zscore = as.vector(scale(count)))
       else .}
 
   if (is.null(prefix)){
