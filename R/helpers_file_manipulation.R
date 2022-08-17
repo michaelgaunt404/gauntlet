@@ -26,3 +26,32 @@ make_new_script = function(folder = "code", file_name = NULL){
   file.edit(file_location)
 }
 
+
+#' Make new Rmd script from template.
+#'
+#' This function copies an Rmd script template from the `gauntlet` package and writes it to a new location as defined by the user.
+#' Write-to folder locations must exist before running this code.
+#'
+#' @param folder a string name (defaults to `analysis` folder)
+#' @param file_name a string name (include .Rmd extension)
+#'
+#' @return an Rmd in the location and with the name chosen by the user
+#' @export
+#'
+#' @examples
+#' #none
+make_new_rmd = function(folder = "analysis", file_name = NULL){
+  folder_location = here::here(folder)
+  file_location = here::here(stringr::str_glue("{folder}/{file_name}"))
+
+  stopifnot("Please provide a filename (include .Rmd extentsion)..." = !is.null(file_name)
+            ,"Folder location does not exist, please make it first..." = !exists(folder_location))
+
+  file.copy(
+    system.file("scripts", "zz_template_markdown_analysis.Rmd", package="gauntlet")
+    ,file_location
+  )
+
+  file.edit(file_location)
+}
+
