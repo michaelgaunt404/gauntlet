@@ -166,3 +166,46 @@ make_honeycomb_counts = function(data, map_back_crs = 4326
 }
 
 
+st_true_midpoint = function(sf_object){
+  #gets the true midpoint along a curved line
+  temp = sf_object %>%
+    mutate(merge_id = row_number())
+
+  #new CRS, cast to linestring, selects cols
+  sf_object_linestring = temp %>%
+    st_transform(2781) %>%
+    st_cast("LINESTRING") %>%
+    mutate(linestring_id = row_number()) %>%
+    select(merge_id, linestring_id)
+
+  #make coords df, pull middle point
+  coords_extract = sf_object_linestring %>%
+    st_line_sample(n = 5) %>%
+    st_transform(4326) %>%
+    st_coordinates() %>%
+    data.frame() %>%
+    merge(sf_object_linestring %>%
+            st_drop_geometry(),
+          by.x = "L1", by.y = "linestring_id") %>%
+    group_by(merge_id) %>%
+    mutate(n = ceiling(n()/2),
+           index = row_number()) %>%
+    filter(n == index) %>%
+    ungroup() %>%
+    select(X, Y, merge_id)
+
+  #convert df to spatial
+  temp %>%
+    st_drop_geometry() %>%
+    merge(coords_extract,
+          by = "merge_id") %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326)
+}
+
+st_extract_coords = function(spatial_object){
+  #only should be used for points for now
+  spatial_object %>%
+    mutate(lon = st_coordinates(geometry)[,1]
+           ,lat = st_coordinates(geometry)[,2])
+}
+

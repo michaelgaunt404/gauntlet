@@ -39,7 +39,13 @@ leaflet_default_tiles = function(object){
 }
 
 
-
+popup_tbl_pretty = function(data){
+  data %>%
+    janitor::clean_names() %>%
+    st_set_geometry(NULL) %>%
+    # select(!c(geometry, text)) %>%
+    leafpop::popupTable()
+}
 
 
 
