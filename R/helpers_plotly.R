@@ -32,7 +32,7 @@ function_name <- function(input_1, input_2) {
 #works best with factors/characters with limited levels
 #used in conjunction with make_menu_item()
 #position is default 0 but needs to matched with
-make_plotly_buttons = function(list, pos = 0){
+plty_make_plotly_buttons = function(list, pos = 0){
   list %>%
     map(~list(method = "restyle",
               args = list(str_glue("transforms[{pos}].value"),
@@ -40,7 +40,7 @@ make_plotly_buttons = function(list, pos = 0){
               label = .x))
 }
 
-make_menu_item = function(active = -1, type = 'dropdown', direction = "down", x= 0, y = 0,
+plty_make_menu_item = function(active = -1, type = 'dropdown', direction = "down", x= 0, y = 0,
                           xanchor = 'left', yanchor = "top", name_list, filter_pos = 0){
   list(
     list(
@@ -106,7 +106,7 @@ make_menu_item = function(active = -1, type = 'dropdown', direction = "down", x=
 #makes range buttons - automates the process
 #takes three lists - all have to be the same length
 #FYI impacts x_lim title and other inputs
-make_range_select_buttons = function(ttl = "Date", month = c(1, 3), step = rep("month", 2), stepmode = rep("backward", 2)){
+plty_make_range_select_buttons = function(ttl = "Date", month = c(1, 3), step = rep("month", 2), stepmode = rep("backward", 2)){
   list(title = ttl,
        rangeselector = list(
          buttons =
@@ -130,7 +130,7 @@ make_range_select_buttons = function(ttl = "Date", month = c(1, 3), step = rep("
 #   rep("backward", 2))
 
 #makes scale transformation buttons=============================================
-make_log_trans_buttons = function(){
+plty_make_log_trans_buttons = function(){
   list(
     list(
       active = 0,
@@ -146,7 +146,7 @@ make_log_trans_buttons = function(){
 }
 
 #makes facet grid titles========================================================
-make_facet_grid_names = function(plot_object){
+plty_make_facet_grid_names = function(plot_object){
   #currently does not work
   #put inside group_map function
   #need to turn on titleY = T in subplot
