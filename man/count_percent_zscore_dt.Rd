@@ -32,6 +32,9 @@ count_percent_zscore_dt(
 
 \item{cntr_scl}{(`TRUE`/`FALSE`) boolean to indicate if zscore should be calculated - default is `FALSE`}
 }
+\value{
+a datatable
+}
 \description{
 This function can be used to perform a number of mathematical operation on a datatable.
 Count or sum numerical values by group, get percent breakdown of counts or sums by group, and get optional zscore of values.

@@ -30,7 +30,7 @@ log_and_info = function(message, logger){
 
 #' Make a clean datetime string of current datetime with simple punctuation and syntax.
 #'
-#' @return
+#' @return character string of datetime using only underscores
 #' @export
 #'
 #' @examples
@@ -43,7 +43,7 @@ clean_datetime = function(){
 
 #' Make a clean date string of current date with simple punctuation and syntax.
 #'
-#' @return
+#' @return character string of date without bad punctuation
 #' @export
 #'
 #' @examples

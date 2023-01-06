@@ -1,6 +1,3 @@
-
-
-
 #' Floor divide a vector by some value.
 #'
 #' This function can be applied to a vector to bin values by a floor divide value.
@@ -298,7 +295,7 @@ count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
 #' @param rnd integer indicating how many digits you want calculated columns to be rounded to - leave empty if you do not want rounding
 #' @param cntr_scl (`TRUE`/`FALSE`) boolean to indicate if zscore should be calculated - default is `FALSE`
 #'
-#' @return
+#' @return a datatable
 #' @export
 #'
 #' @examples
