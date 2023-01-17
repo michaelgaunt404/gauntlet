@@ -9,7 +9,7 @@ make_space(with = "+", n = 50, c = "")
 \arguments{
 \item{with}{string character to repeat - default is a plus sign ('+')}
 
-\item{n}{integer indicating number of times string character should be repeated}
+\item{n}{integer indicating number of times string character should be repeated - default 50}
 
 \item{c}{string character collapse with input - default is an empty character ('')}
 }

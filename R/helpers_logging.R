@@ -11,7 +11,7 @@
 #' #none
 log_and_warn = function(message, logger){
   message(message)
-  warn(logger, message)}
+  log4r::warn(logger, message)}
 
 #' Log and print to console an info message.
 #'
@@ -26,7 +26,22 @@ log_and_warn = function(message, logger){
 #' #none
 log_and_info = function(message, logger){
   message(message)
-  info(logger, message)}
+  log4r::info(logger, message)}
+
+#' Log and print to console an info message.
+#'
+#' @param message string message to print.
+#' @param logger a logger object made using log4r package.
+#'
+#' @return message printed to console and log file with logged message
+#' @export
+#'
+#' @examples
+#'
+#' #none
+log_and_fatal = function(message, logger){
+  message(message)
+  log4r::fatal(logger, message)}
 
 #' Make a clean datetime string of current datetime with simple punctuation and syntax.
 #'
@@ -57,7 +72,7 @@ clean_date = function(){
 #' Make a string using a character repeated some amount of times.
 #'
 #' @param with string character to repeat - default is a plus sign ('+')
-#' @param n integer indicating number of times string character should be repeated
+#' @param n integer indicating number of times string character should be repeated - default 50
 #' @param c string character collapse with input - default is an empty character ('')
 #'
 #' @return string of collapsed, repeated character
@@ -67,7 +82,7 @@ clean_date = function(){
 #'
 #' make_space(with = "//", c = "\\")
 make_space = function(with = "+", n = 50, c = ""){
-  paste0(rep(with, 50),collapse=c) %>%
+  paste0(rep(with, n),collapse=c) %>%
     paste0("\n", .)
 }
 
