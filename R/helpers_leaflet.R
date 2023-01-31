@@ -39,6 +39,19 @@ leaflet_default_tiles = function(object){
 }
 
 
+#' Commonly used Leaflet tiles.
+#'
+#' @return Creates leaflet tiles for leaflet map.
+#' @export
+#'
+#' @examples
+#' #none
+leaflet_default_tiles_index = function(){
+  c("OSM (default)", "Esri", "CartoDB")
+}
+
+
+
 popup_tbl_pretty = function(data){
   data %>%
     janitor::clean_names() %>%
