@@ -46,7 +46,7 @@ plty_make_menu_item = function(active = -1, type = 'dropdown', direction = "down
     list(
       active = 0, type = type, direction = direction,
       xanchor = xanchor, yanchor = yanchor, x = x, y= y,
-      buttons = make_plotly_buttons(list = name_list, pos = filter_pos))
+      buttons = plty_make_plotly_buttons(list = name_list, pos = filter_pos))
   )
 }
 
