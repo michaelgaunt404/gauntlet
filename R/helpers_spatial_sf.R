@@ -12,30 +12,83 @@
 #'
 #' @examples
 #' #work in progress
-quick_buffer = function(geo_data, to = 4326, with = 2781, radius = NA){
+
+#' Quickly create a buffer around spatial objects
+#'
+#' This function creates a buffer around a spatial object with a specified radius.
+#' By default, the buffer is created using a projected coordinate reference system (CRS)
+#' and then transformed back to a geographic CRS.
+#'
+#' @param geo_data a spatial object
+#' @param to the CRS to transform to, default is WGS84 (EPSG code 4326)
+#' @param with the CRS to transform from, default is UTM zone 55S (EPSG code 2781)
+#' @param radius the radius of the buffer in the unit of the input CRS, default is NA
+#' @param endCapStyle the style of the end caps, defaults to "ROUND"
+#' @param joinStyle the style of the line joints, defaults to "ROUND"
+#'
+#' @return a spatial object representing the buffer
+#'
+#' @examples
+#' # Load required libraries
+#' library(sf)
+#' curved_line = st_sfc(
+#'   st_linestring(
+#'     rbind(
+#'       c(-122.68, 45.52)
+#'       ,c(-122.63, 45.55)
+#'       ,c(-122.58, 45.57)
+#'       ,c(-122.55, 45.54)
+#'     ))
+#'   ,crs = 4326) %>%
+#'   st_as_sf()
+#'
+#' mapview::mapview(curved_line) +
+#'   (quick_buffer(curved_line, radius = 1000) %>%
+#'      mapview::mapview())
+quick_buffer = function(geo_data, to = 4326, with = 2781, radius = NA
+                       ,endCapStyle = "ROUND"
+                       ,joinStyle = "ROUND"){
   geo_data %>%
     st_transform(crs = with) %>%
-    st_buffer(dist = radius) %>%
+    st_buffer(dist = radius
+              ,endCapStyle = endCapStyle
+              ,joinStyle = joinStyle) %>%
     st_transform(crs = to)
 }
 
-#' self_buffer
+#' Make a doughnut polygon around a spatial object.
 #'
-#' Creates two buffer polygons around a line or polygon that act together to make a negative space buffer - image a donut shape around a line. It can be used to help geo-reference/identify unknown links to a known network. It creates a poly buffer AROUND a line (roadway) and can be used to filter things EXCEPT the line
+#' Use an object and make a buffer around itself. Works well if you want to isolate an object but can only do it spatially.
 #'
-#' @param object an sf object (generally in lat/long format)
-#' @param rad_bg a numeric value
-#' @param rad_sm a numeric value
-#' @param nm
+#' @param object A spatial object of class 'sf', 'sfc' or 'sfg'.
+#' @param rad_bg Numeric. The radius for the background buffer.
+#' @param rad_sm Numeric. The radius for the smaller buffer.
+#' @param nm A string indicating the name of the buffer. Defaults to NULL.
+#' @return A list with two elements: a background buffer and a difference buffer.
+#' @examples
+#' curved_line = st_sfc(
+#'   st_linestring(
+#'     rbind(
+#'       c(-122.68, 45.52)
+#'       ,c(-122.63, 45.55)
+#'       ,c(-122.58, 45.57)
+#'       ,c(-122.55, 45.54)
+#'     ))
+#'   ,crs = 4326) %>%
+#'   st_as_sf()
 #'
-#' @return a list containing two sf buffer polygons
+#' curved_line %>%
+#'   self_buffer(rad_bg = 1000, rad_sm = 50, nm = "arbitary_name") %>%
+#'   .[[2]] %>%
+#'   mapview::mapview()
+#' @importFrom sf st_as_sf st_difference st_union
 #' @export
 #'
-#' @examples
-#' #work in progress
-self_buffer = function(object, rad_bg = NA, rad_sm = NA, nm = NULL){
+#' @keywords spatial
+#' @seealso \code{\link{st_buffer}}, \code{\link{st_difference}}, \code{\link{st_as_sf}}, \code{\link{st_union}}
+self_buffer = function(spatial_object, rad_bg = NA, rad_sm = NA, nm = NULL){
 
-  on_bg = object %>%
+  on_bg = spatial_object %>%
     quick_buffer(radius = rad_bg) %>%
     st_union() %>%
     st_as_sf() %>%
@@ -43,7 +96,7 @@ self_buffer = function(object, rad_bg = NA, rad_sm = NA, nm = NULL){
     suppressWarnings() %>%
     suppressMessages()
 
-  on_sm = object %>%
+  on_sm = spatial_object %>%
     quick_buffer(radius = rad_sm) %>%
     st_union() %>%
     st_as_sf() %>%
@@ -57,6 +110,7 @@ self_buffer = function(object, rad_bg = NA, rad_sm = NA, nm = NULL){
 
   list(on_bg, ob_diff)
 }
+
 
 #' link_locator
 #'
@@ -166,50 +220,6 @@ make_honeycomb_counts = function(data, map_back_crs = 4326
 }
 
 
-st_true_midpoint = function(sf_object){
-  #gets the true midpoint along a curved line
-  temp = sf_object %>%
-    mutate(merge_id = row_number())
-
-  #new CRS, cast to linestring, selects cols
-  sf_object_linestring = temp %>%
-    st_transform(2781) %>%
-    st_cast("LINESTRING") %>%
-    mutate(linestring_id = row_number()) %>%
-    select(merge_id, linestring_id)
-
-  #make coords df, pull middle point
-  coords_extract = sf_object_linestring %>%
-    st_line_sample(n = 5) %>%
-    st_transform(4326) %>%
-    st_coordinates() %>%
-    data.frame() %>%
-    merge(sf_object_linestring %>%
-            st_drop_geometry(),
-          by.x = "L1", by.y = "linestring_id") %>%
-    group_by(merge_id) %>%
-    mutate(n = ceiling(n()/2),
-           index = row_number()) %>%
-    filter(n == index) %>%
-    ungroup() %>%
-    select(X, Y, merge_id)
-
-  #convert df to spatial
-  temp %>%
-    st_drop_geometry() %>%
-    merge(coords_extract,
-          by = "merge_id") %>%
-    st_as_sf(coords = c("X", "Y"), crs = 4326)
-}
-
-
-st_extract_coords = function(spatial_object){
-  #only should be used for points for now
-  spatial_object %>%
-    mutate(lon = st_coordinates(geometry)[,1]
-           ,lat = st_coordinates(geometry)[,2])
-}
-
 #' Make a bounding box of an sf object
 #'
 #' @param base_geo an sf object - can be a singular ploygon or multiple polygons.
@@ -226,3 +236,90 @@ st_make_bounding_box = function(base_geo){
     st_bbox()
 }
 
+#' Get the true midpoint along a curved line
+#'
+#' This function gets the true midpoint along a curved line represented by a spatial object.
+#' It transforms the object to a new CRS, casts it to a linestring, selects the relevant columns,
+#' extracts the coordinates, finds the middle point, and converts it to a spatial object with the
+#' original CRS.
+#'
+#' @param sf_object A spatial object representing a curved line
+#' @param crs An integer input indicating which CRS to use when extracting the midpoint - default is 2781
+#' @return A spatial object representing the true midpoint along the curved line
+#' @importFrom sf st_transform st_cast st_line_sample st_coordinates st_drop_geometry st_as_sf
+#' @export
+#' @examples
+#' library(sf)
+#'
+#' curved_line = st_sfc(
+#'   st_linestring(
+#'     rbind(
+#'       c(-122.68, 45.52)
+#'       ,c(-122.63, 45.55)
+#'       ,c(-122.58, 45.57)
+#'       ,c(-122.55, 45.54)
+#'     ))
+#'   ,crs = 4326) %>%
+#'   st_as_sf()
+#'
+#' mapview::mapview(curved_line) +
+#'   mapview::mapview(st_true_midpoint(curved_line))
+#'
+#' @importFrom sf st_coordinates
+#' @export
+#'
+#' @rdname st_extract_coords
+#' @aliases extract_coords
+#' @keywords spatial
+#' @seealso \code{\link{st_coordinates}}, \code{\link{st_set_geometry}}
+st_true_midpoint = function(sf_object, crs = 2781){
+  temp = sf_object %>%
+    mutate(merge_id = row_number())
+
+  sf_object_linestring = temp %>%
+    st_transform(crs) %>%
+    st_cast("LINESTRING") %>%
+    mutate(linestring_id = row_number()) %>%
+    select(merge_id, linestring_id)
+
+  coords_extract = sf_object_linestring %>%
+    st_line_sample(n = 5) %>%
+    st_transform(4326) %>%
+    st_coordinates() %>%
+    data.frame() %>%
+    merge(sf_object_linestring %>%
+            st_drop_geometry(),
+          by.x = "L1", by.y = "linestring_id") %>%
+    group_by(merge_id) %>%
+    mutate(n = ceiling(n()/2),
+           index = row_number()) %>%
+    filter(n == index) %>%
+    ungroup() %>%
+    select(X, Y, merge_id)
+
+  temp %>%
+    st_drop_geometry() %>%
+    merge(coords_extract,
+          by = "merge_id") %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326)
+}
+
+
+#' Extract the longitude and latitude coordinates of a spatial object
+#'
+#' This function extracts the longitude and latitude coordinates of a spatial object
+#' representing points.
+#'
+#' @param spatial_object A spatial object representing points
+#' @return A data frame with two columns, "lon" for longitude and "lat" for latitude
+#' @importFrom sf st_coordinates
+#' @export
+#' @examples
+#'mapview::breweries %>%
+#'  st_extract_coords()
+#'
+st_extract_coords = function(spatial_object){
+  spatial_object %>%
+    mutate(lon = st_coordinates(geometry)[,1]
+           ,lat = st_coordinates(geometry)[,2])
+}

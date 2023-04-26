@@ -2,25 +2,43 @@
 % Please edit documentation in R/helpers_spatial_sf.R
 \name{self_buffer}
 \alias{self_buffer}
-\title{self_buffer}
+\title{Make a doughnut polygon around a spatial object.}
 \usage{
-self_buffer(object, rad_bg = NA, rad_sm = NA, nm = NULL)
+self_buffer(spatial_object, rad_bg = NA, rad_sm = NA, nm = NULL)
 }
 \arguments{
-\item{object}{an sf object (generally in lat/long format)}
+\item{rad_bg}{Numeric. The radius for the background buffer.}
 
-\item{rad_bg}{a numeric value}
+\item{rad_sm}{Numeric. The radius for the smaller buffer.}
 
-\item{rad_sm}{a numeric value}
+\item{nm}{A string indicating the name of the buffer. Defaults to NULL.}
 
-\item{nm}{}
+\item{object}{A spatial object of class 'sf', 'sfc' or 'sfg'.}
 }
 \value{
-a list containing two sf buffer polygons
+A list with two elements: a background buffer and a difference buffer.
 }
 \description{
-Creates two buffer polygons around a line or polygon that act together to make a negative space buffer - image a donut shape around a line. It can be used to help geo-reference/identify unknown links to a known network. It creates a poly buffer AROUND a line (roadway) and can be used to filter things EXCEPT the line
+Use an object and make a buffer around itself. Works well if you want to isolate an object but can only do it spatially.
 }
 \examples{
-#work in progress
+curved_line = st_sfc(
+  st_linestring(
+    rbind(
+      c(-122.68, 45.52)
+      ,c(-122.63, 45.55)
+      ,c(-122.58, 45.57)
+      ,c(-122.55, 45.54)
+    ))
+  ,crs = 4326) \%>\%
+  st_as_sf()
+
+curved_line \%>\%
+  self_buffer(rad_bg = 1000, rad_sm = 50, nm = "arbitary_name") \%>\%
+  .[[2]] \%>\%
+  mapview::mapview()
 }
+\seealso{
+\code{\link{st_buffer}}, \code{\link{st_difference}}, \code{\link{st_as_sf}}, \code{\link{st_union}}
+}
+\keyword{spatial}

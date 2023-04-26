@@ -37,11 +37,7 @@ alert_me = function(){
 #plusEqual operator
 `%+=%` = function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
 
-#evaluate string functions
-#eg works if var is "input$something > num" in shiny
-strg_fun_eval = function(text){
-  eval(rlang::parse_expr(text))
-}
+
 
 #takes quick counts for columns and their items
 quick_value_count = function(df, rows, column, filter = NA){
@@ -57,19 +53,7 @@ quick_value_count = function(df, rows, column, filter = NA){
   }
 }
 
-#cleans df using common operations
-quick_clean = function(df, na_marker){
-  df %>%
-    na_if(na_marker) %>%
-    janitor::clean_names() %>%
-    janitor::remove_empty(c("cols", "rows"))
-}
 
-pretty_char = function(col){
-  col %>%
-    stringr::str_replace_all(., "_", " ") %>%
-    stringr::str_to_title(.)
-}
 
 # dgt0 = function(x){
 #   round(x, 0)
@@ -98,16 +82,6 @@ lmt0 = function(x){
 }
 
 #function: formats numbers to pretty strings
-pretty_num = function(vector, rnd = 0){
-  digit = vector %>%
-    dgt0()
-
-  case_when(str_length(abs(digit))>9~paste0(round((digit/1e6), rnd), "B")
-            ,str_length(abs(digit))>6~paste0(round((digit/1e6), rnd), "M")
-            ,str_length(abs(digit))>3~paste0(round((digit/1e3), rnd), "k")
-            ,str_length(abs(digit))>0~paste(digit)
-            ,T~"Undefined")
-}
 
 #shiny specific=================================================================
 list = list(closable = F,

@@ -7,21 +7,22 @@
 quick_leaflet(data, markers = F, lines = F, polys = F)
 }
 \arguments{
-\item{data}{a spatial object}
+\item{data}{A spatial object.}
 
-\item{markers}{boolean to indicate if markers should be used - default value is `false`}
+\item{markers}{A boolean value indicating whether to display marker symbols on the map. The default value is false.}
 
-\item{lines}{boolean to indicate if lines should be used - default value is `false`}
+\item{lines}{A boolean value indicating whether to display lines on the map. The default value is false.}
 
-\item{polys}{boolean to indicate if polygons should be used - default value is `false`}
+\item{polys}{A boolean value indicating whether to display polygons on the map. The default value is false.}
 }
 \value{
-a leaflet map
+A leaflet map.
 }
 \description{
-Make a quick leaflet plot.
+This function creates a leaflet map with various options for displaying spatial data.
 }
 \examples{
 mapview::breweries \%>\%
- quick_leaflet(markers = T)
+quick_leaflet(markers = TRUE)
+
 }

@@ -43,49 +43,6 @@ log_and_fatal = function(message, logger){
   message(message)
   log4r::fatal(logger, message)}
 
-#' Make a clean datetime string of current datetime with simple punctuation and syntax.
-#'
-#' @return character string of datetime using only underscores
-#' @export
-#'
-#' @examples
-#'
-#' clean_datetime()
-clean_datetime = function(){
-  str_remove_all(Sys.time(), "[:punct:]") %>%
-    str_replace_all(" ", "_")
-}
-
-#' Make a clean date string of current date with simple punctuation and syntax.
-#'
-#' @return character string of date without bad punctuation
-#' @export
-#'
-#' @examples
-#'
-#' clean_date()
-clean_date = function(){
-  str_remove_all(Sys.Date(), "[:punct:]") %>%
-    str_replace_all(" ", "_")
-}
-
-#' Make a string using a character repeated some amount of times.
-#'
-#' @param with string character to repeat - default is a plus sign ('+')
-#' @param n integer indicating number of times string character should be repeated - default 50
-#' @param c string character collapse with input - default is an empty character ('')
-#'
-#' @return string of collapsed, repeated character
-#' @export
-#'
-#' @examples
-#'
-#' make_space(with = "//", c = "\\")
-make_space = function(with = "+", n = 50, c = ""){
-  paste0(rep(with, n),collapse=c) %>%
-    paste0("\n", .)
-}
-
 #' Create a multi-line, printable console message from an object.
 #'
 #'  Function takes glue input and properly collpases it using "\n" to make it multi-line string.

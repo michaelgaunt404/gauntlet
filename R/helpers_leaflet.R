@@ -1,23 +1,30 @@
 #' Make a quick leaflet plot.
 #'
-#' @param data a spatial object
-#' @param markers boolean to indicate if markers should be used - default value is `false`
-#' @param lines boolean to indicate if lines should be used - default value is `false`
-#' @param polys boolean to indicate if polygons should be used - default value is `false`
+#' This function creates a leaflet map with various options for displaying spatial data.
 #'
-#' @return a leaflet map
+#' @param data A spatial object.
+#' @param markers A boolean value indicating whether to display marker symbols on the map. The default value is false.
+#' @param lines A boolean value indicating whether to display lines on the map. The default value is false.
+#' @param polys A boolean value indicating whether to display polygons on the map. The default value is false.
+#'
+#' @return A leaflet map.
 #' @export
 #'
 #' @examples
-#'mapview::breweries %>%
-#'  quick_leaflet(markers = T)
+#' mapview::breweries %>%
+#' quick_leaflet(markers = TRUE)
+#'
+#' @importFrom leaflet addTiles addCircleMarkers addPolylines addPolygons
+#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom maps::map
 quick_leaflet = function(data, markers = F, lines = F, polys = F){
   data %>%
-    leaflet() %>%
+    leaflet::leaflet() %>%
     addTiles() %>%
-    { if (markers) (.) %>% addCircleMarkers(color = "black", weight = 2, fillColor = "blue") else .} %>%
-    { if (lines) (.) %>% addPolylines() else .} %>%
-    { if (polys) (.) %>% addPolygons(color = "black", weight = 2, fillColor = "blue") else .}
+    { if (markers) (.) %>% leaflet::addCircleMarkers(color = "black", weight = 2, fillColor = "blue") else .} %>%
+    { if (lines) (.) %>% leaflet::addPolylines() else .} %>%
+    { if (polys) (.) %>% leaflet::addPolygons(color = "black", weight = 2, fillColor = "blue") else .}
 }
 
 
@@ -51,12 +58,22 @@ leaflet_default_tiles_index = function(){
 }
 
 
-
+#' Create a popup table with formatted content
+#'
+#' This function takes a spatial object and creates a popup table with formatted content.
+#'
+#' @param data A spatial object.
+#'
+#' @return A leaflet popup table.
+#'
+#' @importFrom leafpop popupTable
+#' @importFrom janitor clean_names
+#' @importFrom sf st_set_geometry
+#' @importFrom dplyr %>%
 popup_tbl_pretty = function(data){
   data %>%
     janitor::clean_names() %>%
     st_set_geometry(NULL) %>%
-    # select(!c(geometry, text)) %>%
     leafpop::popupTable()
 }
 
