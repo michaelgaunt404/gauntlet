@@ -174,4 +174,62 @@ read_xlsx_allFiles <- function(data_location = "./data/", specifically = NULL,
 }
 
 
+#' Send RDS Files to Google Drive
+#'
+#' This function programmatically sends RDS files saved in a user-provided directory
+#' to a specified Google Drive location. The RDS files are converted to CSV format
+#' before being uploaded to Google Drive.
+#'
+#' @param folder_with_files The directory path containing the RDS files to be sent.
+#'
+#' @return None (invisibly returns NULL)
+#'
+#' @examples
+#' \dontrun{
+#' # Provide the directory path containing the RDS files
+#' folder_with_files <- "path/to/rds/files"
+#'
+#' # Send the RDS files to Google Drive
+#' gdrive_send_rds_files(folder_with_files)
+#' }
+#'
+#' @import here
+#' @import googledrive
+#' @importFrom purrr pmap
+#' @importFrom readr read_rds write_csv
+#'
+#' @keywords RDS, Google Drive, file upload
+#'
+#' @export
+gdrive_send_rds_files = function(folder_with_files){
+  files = here::here(folder_with_files) %>%
+    list.files()
+
+  full_path_files = paste0(folder_with_files, "/", files)
+
+  list(
+    full_path_files
+    ,files) %>%
+    pmap(~{
+
+      tryCatch({
+
+        temp_file = tempfile(fileext = ".csv")
+        temp_data = readr::read_rds(.x)
+        readr::write_csv(temp_data, temp_file)
+
+        # googl
+        googledrive::drive_put(
+          temp_file
+          ,name = paste0(gsub("\\.rds.*", "\\1", .x), ".csv")
+          ,type = "csv"
+          # ,path = as_id(query_table_sel[['gdrive']]) #I guess you don't really need this
+        )
+
+      }, error = function(err) {
+        message("An error orccured....")
+        print(err$message)
+      })
+    })
+}
 #end
