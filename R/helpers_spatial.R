@@ -63,19 +63,11 @@
 #     { if (polys) (.) %>% addPolygons() else .}
 # }
 
-rescale_to = function(column, value){
-  #helps rescale column to specific max value
-  #general purpose function but mostly used to control line widths in leafelt
-  value/max(column)*column
-}
 
 
 #SECTION: Tigris PACKAGE========================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-get_roads = function(state, index){
-  index %>%
-    map(~roads(state = state, county = .x))
-}
+
 
 #SECTION: OPERATION SPECIFIC====================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
