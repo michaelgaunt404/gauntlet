@@ -72,9 +72,9 @@ check_dir_path <- function(dir_path) {
 
   if (!dir.exists(dir_path)) {
     message(paste0("The file location\n'", dir_path, "'\nDOES NOT exist.\n"))
-    create_dir = robust_prompt_used(prompt = "create this directory (Y) or supply a different path (N)? ")
+    create_dir = robust_prompt_used(prompt = "create this directory (Y) or or create at folder with a different path (N)")
 
-    if (create_dir == "y") {
+    if (create_dir) {
       dir.create(dir_path, recursive = TRUE)
       message(paste0("The directory\n'", dir_path, "'\nhas been created.\n"))
     } else {

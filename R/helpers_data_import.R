@@ -180,7 +180,8 @@ read_xlsx_allFiles <- function(data_location = "./data/", specifically = NULL,
 #' to a specified Google Drive location. The RDS files are converted to CSV format
 #' before being uploaded to Google Drive.
 #'
-#' @param folder_with_files The directory path containing the RDS files to be sent.
+#' @param folder_with_files The local directory path containing the RDS files to be sent. Other file types can be in this location - they will be filtered out.
+#' @param gdrive_folder The folder on the GDrive you want data saved to - needs to be top level, do not make it multi-level.
 #'
 #' @return None (invisibly returns NULL)
 #'
@@ -201,12 +202,33 @@ read_xlsx_allFiles <- function(data_location = "./data/", specifically = NULL,
 #' @keywords RDS, Google Drive, file upload
 #'
 #' @export
-gdrive_send_rds_files = function(folder_with_files){
+gdrive_send_rds_files = function(folder_with_files, gdrive_folder){
+
+  message("Checking if folder exists already and if supplied name is unique")
+
+  tmp_item = googledrive::drive_find(pattern = gdrive_folder, type = "folder") %>%
+    filter(name == gdrive_folder)
+
+  if (nrow(tmp_item) == 0) {
+    message("No Gdrive objects returned that match user provided name - creating folder now")
+    googledrive::drive_mkdir(name = gdrive_folder)
+
+  } else {
+    message("Folder already exists - skipping folder creation")
+  }
+
+  message("Reading files located in supplied local folder......")
+
   files = here::here(folder_with_files) %>%
     list.files()
 
+  files = files[str_detect(files, "rds")]
+
+  message(str_glue("There are {length(files)} RDS files in folder location"))
+
   full_path_files = paste0(folder_with_files, "/", files)
 
+  #actual write once path and folder checked out and created
   list(
     full_path_files
     ,files) %>%
@@ -232,7 +254,6 @@ gdrive_send_rds_files = function(folder_with_files){
       })
     })
 }
-
 
 #' Get and Save Files from Google Drive
 #'
