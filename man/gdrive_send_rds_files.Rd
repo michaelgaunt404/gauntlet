@@ -4,10 +4,12 @@
 \alias{gdrive_send_rds_files}
 \title{Send RDS Files to Google Drive}
 \usage{
-gdrive_send_rds_files(folder_with_files)
+gdrive_send_rds_files(folder_with_files, gdrive_folder)
 }
 \arguments{
-\item{folder_with_files}{The directory path containing the RDS files to be sent.}
+\item{folder_with_files}{The local directory path containing the RDS files to be sent. Other file types can be in this location - they will be filtered out.}
+
+\item{gdrive_folder}{The folder on the GDrive you want data saved to - needs to be top level, do not make it multi-level.}
 }
 \value{
 None (invisibly returns NULL)
