@@ -128,34 +128,87 @@ quick_clean = function(df, na_marker){
     janitor::remove_empty(c("cols", "rows"))
 }
 
-pretty_char = function(col){
+#' Make Character Strings Pretty
+#'
+#' This function takes a character vector and replaces underscores with spaces, then converts the first letter of each word to uppercase.
+#'
+#' @param col A character vector or a named column in a data frame.
+#'
+#' @return A character vector with improved formatting.
+#'
+#' @examples
+#' pretty_char(c("hello_world", "goodbye_universe"))
+#' # Output: "Hello World" "Goodbye Universe"
+#'
+#' # When used with a data frame
+#' df <- data.frame(names = c("john_doe", "jane_doe"), age = c(30, 25))
+#' df$names <- pretty_char(df$names)
+#'
+#' @importFrom stringr str_replace_all str_to_title
+#'
+#' @keywords character manipulation
+#'
+#' @author Your Name
+#'
+#' @export
+pretty_char <- function(col) {
   col %>%
     stringr::str_replace_all(., "_", " ") %>%
     stringr::str_to_title(.)
 }
-
 
 #corrects column to start with zero
 # crrct0 = function(x){
 #   x-x[1]
 # }
 
-#function: changes negative to zero
-lmt0 = function(x){
-  ifelse(x<0, 0, x)
+#' Limit to Non-Negative Values
+#'
+#' This function takes a numeric vector and replaces any negative values with zero.
+#'
+#' @param x A numeric vector.
+#'
+#' @return A numeric vector with non-negative values.
+#'
+#' @examples
+#' lmt0(c(5, 6, 2, 0, -1))
+#'
+#' @export
+lmt0 <- function(x) {
+  ifelse(x < 0, 0, x)
 }
 
-#function: formats numbers to pretty strings
-pretty_num = function(vector, rnd = 0){
+#' Make Numeric Values Pretty
+#'
+#' This function takes a numeric vector and formats it as character numbers with a magnitude suffix.
+#'
+#' @param vector A numeric vector.
+#' @param rnd Number of decimal places to round to (default is 0).
+#'
+#' @return A character vector with formatted numeric values.
+#'
+#' @examples
+#' pretty_num(c(1000, 1500000, 3.14159, -500000))
+#'
+#' @importFrom stringr str_length
+#'
+#' @author Mike Gaunt
+#'
+#'
+#' @export
+pretty_num = function(vector, rnd = 0) {
   digit = vector %>%
     dgt0()
 
-  case_when(str_length(abs(digit))>9~paste0(round((digit/1e6), rnd), "B")
-            ,str_length(abs(digit))>6~paste0(round((digit/1e6), rnd), "M")
-            ,str_length(abs(digit))>3~paste0(round((digit/1e3), rnd), "k")
-            ,str_length(abs(digit))>0~paste(digit)
-            ,T~"Undefined")
+  case_when(
+    str_length(abs(digit)) > 9 ~ paste0(round((digit / 1e6), rnd), "B"),
+    str_length(abs(digit)) > 6 ~ paste0(round((digit / 1e6), rnd), "M"),
+    str_length(abs(digit)) > 3 ~ paste0(round((digit / 1e3), rnd), "k"),
+    str_length(abs(digit)) > 0 ~ paste(digit),
+    TRUE ~ "Undefined"
+  )
 }
+
 
 #shiny specific=================================================================
 list = list(closable = F,

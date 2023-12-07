@@ -18,4 +18,5 @@ This function converts a named list to a string, with each element of the list o
 \examples{
 my_list <- list(a = 1, b = 2, c = 3)
 print_named_list(my_list)
+
 }

@@ -63,6 +63,7 @@ make_new_rmd = function(folder = "analysis", file_name = NULL){
 #' @param dir_path A string specifying the path of the directory to check and create if necessary.
 #'
 #' @return None
+#' @export
 #'
 #' @examples
 #' check_dir_path("data/raw")
@@ -101,6 +102,8 @@ check_dir_path <- function(dir_path) {
 #'
 #' @return A string specifying the path of the created directory.
 #'
+#' @export
+#'
 #' @examples
 #' make_dir_prfx_date("data/processed", "my_data_")
 #' make_dir_prfx_date("data/raw", "my_data_")
@@ -138,6 +141,8 @@ make_dir_prfx_date <- function(directory_location, prefix) {
 #' @examples
 #' my_list <- list(a = 1, b = 2, c = 3)
 #' print_named_list(my_list)
+#'
+#' @export
 print_named_list <- function(my_list) {
   my_string <- ""
 

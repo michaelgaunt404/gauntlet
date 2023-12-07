@@ -38,7 +38,6 @@ alert_me = function(){
 `%+=%` = function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
 
 
-
 #takes quick counts for columns and their items
 quick_value_count = function(df, rows, column, filter = NA){
   if(is.na(filter)){
@@ -54,32 +53,6 @@ quick_value_count = function(df, rows, column, filter = NA){
 }
 
 
-
-# dgt0 = function(x){
-#   round(x, 0)
-# }
-#
-# dgt1 = function(x){
-#   round(x, 1)
-# }
-#
-# dgt2 = function(x){
-#   round(x, 2)
-# }
-#
-# dgt3 = function(x){
-#   round(x, 3)
-# }
-
-# #corrects column to start with zero
-# crrct0 = function(x){
-#   x-x[1]
-# }
-
-#function: changes negative to zero
-lmt0 = function(x){
-  ifelse(x<0, 0, x)
-}
 
 #function: formats numbers to pretty strings
 
