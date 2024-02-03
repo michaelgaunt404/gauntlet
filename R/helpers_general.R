@@ -9,24 +9,26 @@
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#helper to make pop up window to alert user
-alert_me = function(){
-  windows(bg = 'red', width = 100, height = 75);
-
-  data.frame(x = 0, y = 0, text = "ALERT: SCRIPT HAS COMPLETED") %>%
-    ggplot(aes(x, y, label = text)) + geom_label(size = 10) +
-    labs(x = "", y = "") +
-    theme(axis.text.x=element_blank(),
-          axis.ticks.x=element_blank(),
-          axis.text.y=element_blank(),
-          axis.ticks.y=element_blank(),
-          panel.border = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          plot.background = element_rect(fill = "red"),
-          panel.background = element_rect(fill = "red")
-    )
-}
+# #helper to make pop up window to alert user
+# alert_me = function(){
+#   windows(bg = 'red', width = 100, height = 75);
+#
+#   data.frame(x = 0, y = 0, text = "ALERT: SCRIPT HAS COMPLETED") %>%
+#     ggplot2::ggplot(
+#       ggplot2::aes(x, y, label = text)) +
+#     ggplot2::geom_label(size = 10) +
+#     ggplot2::labs(x = "", y = "") +
+#     ggplot2::theme(axis.text.x= ggplot2::element_blank(),
+#           axis.ticks.x=ggplot2::element_blank(),
+#           axis.text.y=ggplot2::element_blank(),
+#           axis.ticks.y=ggplot2::element_blank(),
+#           panel.border = ggplot2::element_blank(),
+#           panel.grid.major = ggplot2::element_blank(),
+#           panel.grid.minor = ggplot2::element_blank(),
+#           plot.background = ggplot2::element_rect(fill = "red"),
+#           panel.background = ggplot2::element_rect(fill = "red")
+#     )
+# }
 
 #helper to make floor divides
 # #generally used to make bins
@@ -56,106 +58,7 @@ quick_value_count = function(df, rows, column, filter = NA){
 
 #function: formats numbers to pretty strings
 
-#shiny specific=================================================================
-list = list(closable = F,
-            collapsed = F,
-            collapsible = T,
-            width = "100%",
-            solidHeader = T,
-            status = "primary")
 
-quick_bs = function(id, title, text, trigger = "hover"){
-  tagList(
-    bsButton(inputId = id, label = "Info", icon = icon("question"), style = "info", size = "small"),
-    bsPopover(id = id, title = title,
-              content = text,
-              placement = "right",
-              trigger = trigger)
-  )
-}
-
-
-#takes master shiny input list and extracts list elements by name match
-#string can take "|" operator
-get_list_items = function(input_list, suffix = NA, string, purrr = T){
-  if (purrr){
-    input_list[names(input_list)[(str_detect(names(input_list) , paste0("_", suffix))+str_detect(names(input_list), string))==2]]
-  } else {
-    input_list[names(input_list)[str_detect(names(input_list), string)]]
-  }
-}
-
-#makes common box that works for most purposes
-#objects need to be in a list
-# boxPlus_common = function(title = NA, object_in_box = NA, collapsed = F){
-#   boxPlus(title = title,
-#           closable = F,
-#           collapsed = collapsed,
-#           collapsible = T,
-#           width = "100%",
-#           solidHeader = T,
-#           status = "primary",
-#           object_in_box)
-# }
-
-#makes common box that works for most purposes
-#objects need to be in a list
-box_common = function(title = NA, object_in_box = NA, collapsed = F){
-  box(title = title,
-      # closable = F,
-      collapsed = collapsed,
-      collapsible = T,
-      width = "100%",
-      solidHeader = T,
-      status = "primary",
-      object_in_box)
-}
-
-#creates an empty row of a given height
-#for shiny usage
-spacer_row = function(size){
-  fluidRow(box(height = size))
-}
-
-#creates function for modals
-modal = function(trigger, msg){
-  observeEvent(trigger, {
-    showModal(modalDialog(
-      msg,
-      size = "l",
-      easyClose = TRUE
-    ))
-  })
-}
-
-# #automates aggregating counts and percents for different groupings of data
-# count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
-#                                 col = count, prefix = NULL,
-#                                 rnd = NULL, cntr_scl = FALSE){
-#   #summarizing column has to be 'count'
-#
-#   tmp = data %>%
-#     group_by(across({{grp_c}})) %>%
-#     summarise(count = sum({{col}})) %>%
-#     ungroup() %>%
-#     group_by(across({{grp_p}})) %>%
-#     mutate(percent = ({{col}}/sum({{col}})) %>%
-#              { if (!is.null(rnd)) round(., rnd) else .}
-#     ) %>%
-#     ungroup() %>%
-#     { if (cntr_scl) (.) %>%
-#         group_by(across({{grp_z}})) %>%
-#         mutate(zscore = as.vector(scale({{col}})))
-#       else .}
-#
-#   if (is.null(prefix)){
-#     tmp
-#   } else {
-#     newname1 = str_glue("{prefix}_count")
-#     newname2 = str_glue("{prefix}_percent")
-#     rename(tmp, !!newname1 := count, !!newname2 := percent)
-#   }
-# }
 
 #' Ask user for T/F input with user defined prompt.
 #'
@@ -184,10 +87,10 @@ robust_prompt_used <- function(prompt) {
   response <- toupper(readline())
 
   if (response == "Y") {
-    message(str_glue('You elected to {prompt}...'))
+    message(stringr::str_glue('You elected to {prompt}...'))
     return(response == "Y")
   } else if (response == "N") {
-    message(str_glue('You did not elect to {prompt}...'))
+    message(stringr::str_glue('You did not elect to {prompt}...'))
     return(response == "Y")
   } else {
     message("Invalid response. Please enter Y or N.")

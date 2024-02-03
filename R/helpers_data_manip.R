@@ -298,6 +298,7 @@ modal = function(trigger, msg){
 #' @param cntr_scl (`TRUE`/`FALSE`) boolean to indicate if zscore should be calculated - default is `FALSE`
 #'
 #' @return a dataframe
+#' @import dplyr
 #' @export
 #'
 #' @examples
@@ -312,25 +313,25 @@ modal = function(trigger, msg){
 count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
                                 col , prefix = NULL, rnd = NULL, cntr_scl = FALSE){
   tmp = data %>%
-    group_by(across({{grp_c}})) %>%
-    summarise(count = sum({{col}})) %>%
-    ungroup() %>%
-    group_by(across({{grp_p}})) %>%
-    mutate(percent = (count/sum(count)) %>%
+    dplyr::group_by(across({{grp_c}})) %>%
+    dplyr::summarise(count = sum({{col}})) %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(across({{grp_p}})) %>%
+    dplyr::mutate(percent = (count/sum(count)) %>%
              { if (!is.null(rnd)) round(., rnd) else .}
     ) %>%
-    ungroup() %>%
+    dplyr::ungroup() %>%
     { if (cntr_scl) (.) %>%
-        group_by(across({{grp_z}})) %>%
-        mutate(zscore = as.vector(scale(count)))
+        dplyr::group_by(across({{grp_z}})) %>%
+        dplyr::mutate(zscore = as.vector(scale(count)))
       else .}
 
   if (is.null(prefix)){
     tmp
   } else {
-    newname1 = str_glue("{prefix}_count")
-    newname2 = str_glue("{prefix}_percent")
-    rename(tmp, !!newname1 := count, !!newname2 := percent)
+    newname1 = stringr::str_glue("{prefix}_count")
+    newname2 = stringr::str_glue("{prefix}_percent")
+    dplyr::rename(tmp, !!newname1 := count, !!newname2 := percent)
   }
 }
 
@@ -349,6 +350,8 @@ count_percent_zscore = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
 #' @param cntr_scl (`TRUE`/`FALSE`) boolean to indicate if zscore should be calculated - default is `FALSE`
 #'
 #' @return a datatable
+#' @import data.table
+#' @import palmerpenguins
 #' @export
 #'
 #' @examples
@@ -397,6 +400,8 @@ count_percent_zscore_dt = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
 #' @param quantiles vector of quantiles that should be returned - default is `c(0, .25, .5, .75, 1)` quantiles
 #'
 #' @return a dataframe with qunatiles - in wide format
+#' @import purrr
+#' @importFrom DescTools Quantile
 #' @export
 #'
 #' @examples
@@ -418,9 +423,10 @@ count_percent_zscore_dt = function(data, grp_c = ..., grp_p = ..., grp_z = ...,
 #' #alternative calucaltion by expansion
 #' rep(df$days[1:4], df$count[1:4]) %>%  summary()
 group_wtd_quantiles = function(df, value, weight = "count", quantiles = c(0, .25, .5, .75, 1)){
-  map(quantiles, ~DescTools::Quantile(df[[value]], df[[weight]], .x, na.rm = T)) %>%
-    reduce(bind_cols) %>%
-    set_names(map_chr(quantiles, ~paste0(value, "_", .x*100, "%")))
+  purrr::map(quantiles, ~DescTools::Quantile(df[[value]], df[[weight]], .x, na.rm = T)) %>%
+    purrr::reduce(bind_cols) %>%
+    purrr::set_names(
+      purrr::map_chr(quantiles, ~paste0(value, "_", .x*100, "%")))
 }
 
 #' Apply Min-Max normalization to a numeric vector.

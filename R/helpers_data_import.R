@@ -86,12 +86,12 @@ read_rds_allFiles <- function(data_location = "data", specifically = NULL
     list.files() %>%
     .[str_detect(., "rds")] %>%
     { if (!is.null(specifically)) (.) %>% .[str_detect(., specifically)] else .} %>%
-    { if (latest) .[parse_number(.) == max(parse_number(.))] else .}
+    { if (latest) .[readr::parse_number(.) == max(readr::parse_number(.))] else .}
 
   if (clean){
     data_list =
-      crossing(data_location, file_list) %>%
-      pmap(~here(.x, .y) %>%
+      tidyr::crossing(data_location, file_list) %>%
+      purrr::pmap(~here(.x, .y) %>%
              readRDS() %>%
              na_if("NULL") %>%
              janitor::remove_empty("cols") %>%
@@ -99,16 +99,16 @@ read_rds_allFiles <- function(data_location = "data", specifically = NULL
       )
   } else {
     data_list =
-      crossing(data_location, file_list) %>%
-      pmap(~here(.x, .y) %>%
+      tidyr::crossing(data_location, file_list) %>%
+      purrr::pmap(~here::here(.x, .y) %>%
              readRDS()
       )
   }
 
   if (!is.null(clean_string)) {
     names(data_list) = file_list %>%
-      map(~str_remove(.x, data_location) %>%
-            str_remove(".rds") %>%
+      map(~stringr::str_remove(.x, data_location) %>%
+            stringr::str_remove(".rds") %>%
             gsub(str_glue("{clean_string}.*"), "\\1", .))
   } else {
     names(data_list) = file_list
@@ -289,6 +289,7 @@ gdrive_send_rds_files = function(folder_with_files, gdrive_folder){
 #' @import googledrive
 #' @importFrom data.table fread
 #' @importFrom purrr map
+#' @importFrom here here
 #' @export
 gdrive_files_to_rds <- function(data_to_fetch, save_location, save_format = ".rds") {
   tryCatch({

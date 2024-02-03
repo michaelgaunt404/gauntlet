@@ -1,12 +1,34 @@
-Package: gauntlet
 Type: Package
-Title: What the Package Does (Title Case)
+Package: gauntlet
+Title: Personal helper functions
 Version: 0.1.0
 Author: Mike Gaunt
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Maintainer: The package maintainer <mike.gaunt.404@gmail.com>
+Description: This package contains a number of general purpose helper
+    functions that Mike Gaunt has created overtime. I generally use them
+    through out my project work, if we are collaborating on a project you
+    will likely need to download this package.
+License: MIT + file LICENSE
+Imports: 
+    data.table (>= 1.14.10),
+    DescTools (>= 0.99.52),
+    dplyr (>= 1.1.4),
+    ggplot2 (>= 3.4.4),
+    googledrive (>= 2.1.1),
+    here (>= 1.0.1),
+    janitor (>= 2.2.0),
+    log4r (>= 0.4.3),
+    palmerpenguins,
+    purrr (>= 1.0.2),
+    readr (>= 2.1.4),
+    readxl (>= 1.4.3),
+    rlang (>= 1.1.2),
+    rmarkdown (>= 2.25),
+    roll (>= 1.1.6),
+    shiny (>= 1.8.0),
+    shinyBS (>= 0.61.1),
+    shinydashboard (>= 0.7.2),
+    stringr (>= 1.5.1)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3

@@ -55,43 +55,6 @@ make_diff = function(col, lags, percent = F){
   }
 }
 
-#' make_diff_col
-#'
-#' Pre-filled difference function. This function should not be directly used, it is used inside of auto_make_diff_col() .
-#'
-#' @param lags numeric list
-#' @param percent boolean to determine if difference should be percent difference
-#'
-#' @return pre-filled function
-#' @export
-#'
-#' @examples
-#' #none
-make_diff_col = function(lags = c(1, 7), percent = F){
-  purrr::map(lags, ~purrr::partial(make_diff, lags = .x, percent = percent))
-}
-
-#' Make multiple differenced columns.
-#'
-#' Makes differenced column(s) from a dataframe column defined by the user.
-#'
-#' @param col a column to make differences of
-#' @param lags numeric list
-#' @param percent boolean to determine if difference should be percent difference
-#'
-#' @return dataframe with differenced column(s)
-#' @export
-#'
-#' @examples
-#' data.frame(index = 1:10,
-#'           value1 = rnorm(10), value2 = rnorm(10)) %>%
-#'  mutate(auto_make_diff_col(col = value1, percent = T))
- auto_make_diff_col = function(col, lags = c(1, 7), percent = F){
-   dplyr::across({{col}}
-                 ,make_diff_col(lags = lags, percent = percent)
-                 ,.names = "{.col}_diff{ifelse(percent, 'p', '')}_{lags}")
- }
-
 
 #' make_rMean_col
 #'
@@ -209,8 +172,8 @@ ts_zscore = function(data, grp = NULL, width = 7
 #'
 #'roll_mad(numeric_vector, last = T)
 #'
-#'#compare to zscore
-#'scale(numeric_vector)[,1]
+#' #compare to zscore
+#' scale(numeric_vector)[,1]
 # TODO should be able to pick tail, head, or centered for window alignment
 roll_mad = function(values, last = F){
   ((abs(values-median(values, na.rm = T)))/
@@ -238,7 +201,7 @@ roll_mad = function(values, last = F){
 ts_mad = function(data, window = 20){
 
   data = data %>%
-    mutate(index_forced = row_number())
+    dplyr::mutate(index_forced = row_number())
 
   temp_list = list()
   for (i in 1:(nrow(data)-window)){
@@ -248,11 +211,11 @@ ts_mad = function(data, window = 20){
 
     #make distance matrix for window
     window_values = temp_df %>%
-      pull(value)
+      dplyr::pull(value)
 
     temp_list[[i]] = temp_df %>%
-      tail(1) %>%
-      mutate(mad_value = roll_mad(window_values, last = T))
+      utils::tail(1) %>%
+      dplyr::mutate(mad_value = roll_mad(window_values, last = T))
 
   }
 

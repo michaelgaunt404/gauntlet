@@ -131,12 +131,12 @@ plty_make_facet_grid_names = function(plot_object){
   #currently only rows
 
   plot_object %>%
-  layout(yaxis = list(
-  title = paste0(c(rep("&nbsp;", 20),
-                   paste("<b>", as.character(.y), "</b>"),
-                   rep("&nbsp;", 20),
-                   rep("\n&nbsp;", 3)),
-                 collapse = "")))
+    plotly::layout(yaxis = list(
+      title = paste0(c(rep("&nbsp;", 20),
+                       paste("<b>", as.character(.y), "</b>"),
+                       rep("&nbsp;", 20),
+                       rep("\n&nbsp;", 3)),
+                     collapse = "")))
 }
 
 

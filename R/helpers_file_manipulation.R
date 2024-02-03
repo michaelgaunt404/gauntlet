@@ -7,6 +7,9 @@
 #' @param file_name a string name (include .r extentsion)
 #'
 #' @return a script in the location and with the name choosen by the user
+#' @importFrom utils file.edit
+#' @importFrom here here
+#' @importFrom stringr str_glue
 #' @export
 #'
 #' @examples
@@ -23,7 +26,7 @@ make_new_script = function(folder = "code", file_name = NULL){
     ,file_location
   )
 
-  file.edit(file_location)
+  utils::file.edit(file_location)
 }
 
 
@@ -36,6 +39,9 @@ make_new_script = function(folder = "code", file_name = NULL){
 #' @param file_name a string name (include .Rmd extension)
 #'
 #' @return an Rmd in the location and with the name chosen by the user
+#' @importFrom utils file.edit
+#' @importFrom here here
+#' @importFrom stringr str_glue
 #' @export
 #'
 #' @examples
@@ -52,7 +58,7 @@ make_new_rmd = function(folder = "analysis", file_name = NULL){
     ,file_location
   )
 
-  file.edit(file_location)
+  utils::file.edit(file_location)
 }
 
 
