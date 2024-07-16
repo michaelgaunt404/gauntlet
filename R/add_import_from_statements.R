@@ -1,0 +1,56 @@
+#' Add @importFrom Statements Based on Script Dependencies
+#'
+#' This function analyzes a given script to detect functions used in the
+#' `package::function` notation. It then generates `@importFrom` statements
+#' for each package detected, capturing the required dependencies for the script.
+#'
+#' @param script A character string specifying the path to the R script file.
+#'
+#' @return This function generates and prints `@importFrom` statements for each
+#' package detected in the script.
+#'
+#' @examples
+#' ex_script <- "mtcars %>%
+#'    dplyr::mutate(
+#'      var_1 = DescTools::Quantile(disp, probs = .6),
+#'      var_2 = str_glue('{disp} {hp}')
+#'    ) %>%
+#'    dplyr::arrange(disp)"
+#' temp_script <- tempfile(fileext = ".R")
+#' writeLines(ex_script, temp_script)
+#' add_import_from_statements(temp_script)
+#'
+#'
+#' @export
+add_import_from_statements <- function(script) {
+  # Read the script lines
+  script_lines <- readLines(script)
+
+  # Split script into parts by '(' and whitespace
+  split_parts <- unlist(strsplit(script_lines, "\\(|\\s+"))
+
+  # Filter parts containing '::'
+  parts_with_double_colon <- split_parts[grep("::", split_parts)]
+
+  # Extract unique package names
+  packages <- unique(gsub("::.*", "", parts_with_double_colon))
+
+  # Check if packages were detected
+  if (length(packages) > 0) {
+    message("Packages detected:")
+    # Generate @importFrom statements for each package
+    import_statements <- sapply(packages, function(pkg) {
+      functions <- parts_with_double_colon[grep(paste0(pkg, "::"), parts_with_double_colon)]
+      paste("@importFrom", pkg, paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
+    })
+
+    # Print the @importFrom statements using cat
+    cat(import_statements, sep = "\n")
+  } else {
+    message("No packages were detected.")
+  }
+}
+
+
+input_string <- "library(dplyr) %>% dplyr::mutate(var_1 = Desc::Quantile(disp, probs = .6), var_2 = dplyr::str_glue('{disp} {hp}'))"
+
