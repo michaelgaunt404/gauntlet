@@ -9,33 +9,6 @@
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# #helper to make pop up window to alert user
-# alert_me = function(){
-#   windows(bg = 'red', width = 100, height = 75);
-#
-#   data.frame(x = 0, y = 0, text = "ALERT: SCRIPT HAS COMPLETED") %>%
-#     ggplot2::ggplot(
-#       ggplot2::aes(x, y, label = text)) +
-#     ggplot2::geom_label(size = 10) +
-#     ggplot2::labs(x = "", y = "") +
-#     ggplot2::theme(axis.text.x= ggplot2::element_blank(),
-#           axis.ticks.x=ggplot2::element_blank(),
-#           axis.text.y=ggplot2::element_blank(),
-#           axis.ticks.y=ggplot2::element_blank(),
-#           panel.border = ggplot2::element_blank(),
-#           panel.grid.major = ggplot2::element_blank(),
-#           panel.grid.minor = ggplot2::element_blank(),
-#           plot.background = ggplot2::element_rect(fill = "red"),
-#           panel.background = ggplot2::element_rect(fill = "red")
-#     )
-# }
-
-#helper to make floor divides
-# #generally used to make bins
-# floor_divide = function(value, floor){
-#   (value %/% floor)*floor
-# }
-
 #plusEqual operator
 `%+=%` = function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
 
@@ -54,49 +27,6 @@ quick_value_count = function(df, rows, column, filter = NA){
   }
 }
 
-
-
-#function: formats numbers to pretty strings
-
-
-
-#' Ask user for T/F input with user defined prompt.
-#'
-#' This function prompts the user with a message asking whether or not they want
-#' to perform a specific action. The function accepts the user's response and
-#' handles invalid input by prompting the user again.
-#'
-#' @param prompt A character string indicating the action to be performed.
-#' @return A logical value indicating whether or not the user elected to perform
-#' the specified action. Returns TRUE if the user entered "Y", and FALSE if the
-#' user entered "N".
-#'
-#' @examples
-#' robust_prompt_used("continue with the analysis")
-#'
-#' @export
-#'
-#' @seealso \code{\link{readline}}, \code{\link{str_glue}}
-#'
-#' @importFrom stringr str_glue
-#'
-#' @keywords robust prompt, user input
-#'
-robust_prompt_used <- function(prompt) {
-  message(str_glue("Do you want to {prompt}? Y/N"))
-  response <- toupper(readline())
-
-  if (response == "Y") {
-    message(stringr::str_glue('You elected to {prompt}...'))
-    return(response == "Y")
-  } else if (response == "N") {
-    message(stringr::str_glue('You did not elect to {prompt}...'))
-    return(response == "Y")
-  } else {
-    message("Invalid response. Please enter Y or N.")
-    robust_prompt_used(prompt = prompt)
-  }
-}
 
 #' Flatten a named list
 #'
