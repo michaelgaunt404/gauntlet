@@ -254,15 +254,15 @@ requires a package declaration based on the current environment.</p>
 <span><span class="co">#&gt;     dplyr::arrange(mpg)                      #!!!! LINE CHANGED</span></span>
 <span><span class="co">#&gt; }</span></span></code></pre></div>
 <p>This function identifies unqualified function calls and replaces them
-with the correct <code>[package]::[function]</code> notation. It’s
-useful to run this function to ensure that all function calls are
-properly qualified.</p>
-<p>The function indicates which lines of your code contained unqualified
-function calls by appending <code>#!!!! LINE CHANGED</code> to each
-line.<br>
-If <code>checkPkg_add_pkgFnctns_links</code> has identified the correct
-missing package qualifiers, simply copy and paste the output into your
-function and save the corrections—otherwise, just delete them.</p>
+with the correct <code>[package]::[function]</code> notation - lines
+with changes are appended with <code>#!!!! LINE CHANGED</code> to notify
+the user.</p>
+<p>If <code>checkPkg_add_pkgFnctns_links</code> has identified the
+correct missing package qualifiers, simply copy and paste the output
+into your function and save the corrections — otherwise, just delete
+them.</p>
+<p>We will now save our edited function with the corrected package
+declarations.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_script_long</span> <span class="op">=</span> <span class="st">"process_mtcars = function(){</span></span>
 <span><span class="st">  mtcars %&gt;%</span></span>
@@ -284,13 +284,12 @@ function and save the corrections—otherwise, just delete them.</p>
 <code>checkPkg_make_importFrom_fnctn_statments</code><a class="anchor" aria-label="anchor" href="#checkpkg_make_importfrom_fnctn_statments"></a>
 </h3>
 <p>Finally, we’ll use the
-<code>checkPkg_make_importFrom_fnctn_statments</code> function. This
-function generates <span class="citation">@importFrom</span> statements
-for each package detected in your script, which is essential for proper
-documentation.</p>
+<code>checkPkg_make_importFrom_fnctn_statments</code> function.</p>
+<p>This function generates <span class="citation">@importFrom</span>
+statements for each package detected in your script, which is essential
+for proper documentation.</p>
 <p>We will run in on our newly edited function
-<code>process_mtcars.R</code> with the full
-<code>package::function</code> declarations.</p>
+<code>process_mtcars.R</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate @importFrom statements</span></span>
 <span><span class="fu"><a href="../reference/checkPkg_make_importFrom_fnctn_statments.html">checkPkg_make_importFrom_fnctn_statments</a></span><span class="op">(</span><span class="va">temp_script_long_path</span><span class="op">)</span></span>
