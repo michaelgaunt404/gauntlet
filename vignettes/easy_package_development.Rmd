@@ -154,12 +154,11 @@ result <- checkPkg_add_pkgFnctns_links(
 )
 ```
 
-This function identifies unqualified function calls and replaces them with the correct `[package]::[function]` notation. It's useful to run this function to ensure that all function calls are properly qualified.
+This function identifies unqualified function calls and replaces them with the correct `[package]::[function]` notation - lines with changes are appended with `#!!!! LINE CHANGED` to notify the user.   
+  
+If `checkPkg_add_pkgFnctns_links` has identified the correct missing package qualifiers, simply copy and paste the output into your function and save the corrections — otherwise, just delete them.
 
-The function indicates which lines of your code contained unqualified function calls by appending `#!!!! LINE CHANGED` to each line.   
-If `checkPkg_add_pkgFnctns_links` has identified the correct missing package qualifiers, simply copy and paste the output into your function and save the corrections—otherwise, just delete them.
-
-
+We will now save our edited function with the corrected package declarations.
 ```{r}
 temp_script_long = "process_mtcars = function(){
   mtcars %>%
@@ -179,9 +178,11 @@ writeLines(
 
 ## `checkPkg_make_importFrom_fnctn_statments`   
          
-Finally, we'll use the `checkPkg_make_importFrom_fnctn_statments` function. This function generates @importFrom statements for each package detected in your script, which is essential for proper documentation.    
+Finally, we'll use the `checkPkg_make_importFrom_fnctn_statments` function.   
+  
+This function generates @importFrom statements for each package detected in your script, which is essential for proper documentation.    
 
-We will run in on our newly edited function `process_mtcars.R` with the full `package::function` declarations.    
+We will run in on our newly edited function `process_mtcars.R`.    
 
 ```{r}
 # Generate @importFrom statements
