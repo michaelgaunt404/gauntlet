@@ -32,20 +32,33 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
   parts_with_double_colon <- split_parts[grep("::", split_parts)]
 
   # Extract unique package names
-  packages <- unique(gsub("::.*", "", parts_with_double_colon))
+  packages = unique(
+    gsub("::.*", "", parts_with_double_colon) %>%
+      gsub(".*\\{", "", .) %>%
+      gsub("[[:punct:]]", "", .)
+  ) %>%
+    sort()
+
 
   # Check if packages were detected
+  pkg = "htmltools"
   if (length(packages) > 0) {
     message("Packages detected:")
-    # Generate @importFrom statements for each package
     import_statements <- sapply(packages, function(pkg) {
-      functions <- parts_with_double_colon[grep(paste0(pkg, "::"), parts_with_double_colon)]
-      paste("@importFrom", pkg, paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
-    })
+      functions <- parts_with_double_colon[grep(paste0(pkg,
+                                                       "::"), parts_with_double_colon)] %>%
+        gsub(stringr::str_glue(".*({pkg})"), "\\1", .) %>%
+        gsub("\\(|\\)", "\\1", .) %>%
+        unique() %>%
+        sort()
 
-    # Print the @importFrom statements using cat
+      paste("@importFrom"
+            ,pkg
+            ,paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
+    })
     cat(import_statements, sep = "\n")
-  } else {
+  }
+  else {
     message("No packages were detected.")
   }
 }
