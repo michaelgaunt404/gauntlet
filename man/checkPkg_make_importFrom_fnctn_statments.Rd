@@ -29,5 +29,4 @@ temp_script <- tempfile(fileext = ".R")
 writeLines(ex_script, temp_script)
 checkPkg_make_importFrom_fnctn_statments(temp_script)
 
-
 }
