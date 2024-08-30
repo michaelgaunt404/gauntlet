@@ -232,7 +232,7 @@ gdrive_send_rds_files = function(folder_with_files, gdrive_folder){
   list(
     full_path_files
     ,files) %>%
-    pmap(~{
+    purrr::pmap(~{
 
       tryCatch({
 

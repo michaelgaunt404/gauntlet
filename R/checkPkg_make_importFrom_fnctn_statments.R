@@ -1,0 +1,64 @@
+#' Add @importFrom Statements Based on Script Dependencies
+#'
+#' This function analyzes a given script to detect functions used in the
+#' `package::function` notation. It then generates `@importFrom` statements
+#' for each package detected, capturing the required dependencies for the script.
+#'
+#' @param script A character string specifying the path to the R script file.
+#'
+#' @return This function generates and prints `@importFrom` statements for each
+#' package detected in the script.
+#'
+#' @examples
+#' ex_script <- "mtcars %>%
+#'    dplyr::mutate(
+#'      var_1 = DescTools::Quantile(disp, probs = .6),
+#'      var_2 = str_glue('{disp} {hp}')
+#'    ) %>%
+#'    dplyr::arrange(disp)"
+#' temp_script <- tempfile(fileext = ".R")
+#' writeLines(ex_script, temp_script)
+#' checkPkg_make_importFrom_fnctn_statments(temp_script)
+#'
+#' @export
+checkPkg_make_importFrom_fnctn_statments <- function(script) {
+  # Read the script lines
+  script_lines <- readLines(script)
+
+  # Split script into parts by '(' and whitespace
+  split_parts <- unlist(strsplit(script_lines, "\\(|\\s+"))
+
+  # Filter parts containing '::'
+  parts_with_double_colon <- split_parts[grep("::", split_parts)]
+
+  # Extract unique package names
+  packages = unique(
+    gsub("::.*", "", parts_with_double_colon) %>%
+      gsub(".*\\{", "", .) %>%
+      gsub("[[:punct:]]", "", .)
+  ) %>%
+    sort()
+
+
+  # Check if packages were detected
+  pkg = "htmltools"
+  if (length(packages) > 0) {
+    message("Packages detected:")
+    import_statements <- sapply(packages, function(pkg) {
+      functions <- parts_with_double_colon[grep(paste0(pkg,
+                                                       "::"), parts_with_double_colon)] %>%
+        gsub(stringr::str_glue(".*({pkg})"), "\\1", .) %>%
+        gsub("\\(|\\)", "\\1", .) %>%
+        unique() %>%
+        sort()
+
+      paste("@importFrom"
+            ,pkg
+            ,paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
+    })
+    cat(import_statements, sep = "\n")
+  }
+  else {
+    message("No packages were detected.")
+  }
+}
