@@ -16,6 +16,7 @@
 <url><loc>/reference/count_percent_zscore.html</loc></url>
 <url><loc>/reference/count_percent_zscore_dt.html</loc></url>
 <url><loc>/reference/crrct0.html</loc></url>
+<url><loc>/reference/detail_R_scripts.html</loc></url>
 <url><loc>/reference/dgt0.html</loc></url>
 <url><loc>/reference/dgt1.html</loc></url>
 <url><loc>/reference/dgt2.html</loc></url>
@@ -51,6 +52,7 @@
 <url><loc>/reference/read_xlsx_allFiles.html</loc></url>
 <url><loc>/reference/remindMe_packages_to_use.html</loc></url>
 <url><loc>/reference/remindMe_trycatch.html</loc></url>
+<url><loc>/reference/remove_reversed_dupe_cols.html</loc></url>
 <url><loc>/reference/robust_prompt_used.html</loc></url>
 <url><loc>/reference/roll_mad.html</loc></url>
 <url><loc>/reference/shiny_box_common.html</loc></url>
