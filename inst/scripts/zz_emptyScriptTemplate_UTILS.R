@@ -1,6 +1,6 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# This is a utility script that holds custom functions
+# DESC: This is a utility script that holds custom functions
 #
 # By: mike gaunt, michael.gaunt@wsp.com
 #
