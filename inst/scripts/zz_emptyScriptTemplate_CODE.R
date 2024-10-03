@@ -1,6 +1,6 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# This is script [[insert brief readme here]]
+# DESC: This is script [[insert brief readme here]]
 #
 # By: mike gaunt, michael.gaunt@wsp.com
 #
