@@ -22,7 +22,7 @@
 #'   extracted from the script's metadata.}
 #' }
 #'
-#' @importFrom dplyr arrange
+#' @importFrom dplyr arrange select mutate case_when
 #' @importFrom purrr map_df
 #' @importFrom stringr str_detect str_pad
 #'
@@ -34,7 +34,7 @@
 #'    #
 #'    # DESC: A high-level description of what this script does.
 #'    #
-#'    # By: mike gaunt, michael.gaunt@wsp.com
+#'    # By: mike gaunt, michael.gaunt@throwaway.com
 #'    #
 #'    # README: Additional details re/ script
 #'    #-------- [[insert brief readme here]]
@@ -89,18 +89,23 @@ detail_R_scripts <- function(dir){
 
       }, error = function(err) {
         print(paste("Error occurred:", err$message))
-
         temp_data <- data.frame(
           dir = dir,
           script = basename(.x),
-          author = "z_NULL",
-          description = "NULL",
-          details = "NULL"
+          author = NA_character_,
+          description = NA_character_,
+          details = NA_character_
         )
-
         return(temp_data)
       })
     }) %>%
-    dplyr::arrange(author, script)
+    dplyr::arrange(author, script) %>%
+    dplyr::select(-dir) %>%
+    dplyr::mutate(type = dplyr::case_when(
+      stringr::str_detect(script, "^dev_")~"dev"
+      ,stringr::str_detect(script, "^script_")~"script"
+      ,T~NA_character_
+    )) %>%
+    dplyr::select(script, type, author, description, details)
 
 }

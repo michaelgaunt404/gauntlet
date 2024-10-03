@@ -40,7 +40,7 @@ script_content <-
    #
    # DESC: A high-level description of what this script does.
    #
-   # By: mike gaunt, michael.gaunt@wsp.com
+   # By: mike gaunt, michael.gaunt@throwaway.com
    #
    # README: Additional details re/ script
    #-------- [[insert brief readme here]]

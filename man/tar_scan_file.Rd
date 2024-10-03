@@ -4,26 +4,56 @@
 \alias{tar_scan_file}
 \title{Scan File for Target String}
 \usage{
-tar_scan_file(file, print_tar = FALSE, rm_tar_load = T)
+tar_scan_file(file, rm_tar_load = TRUE)
 }
 \arguments{
 \item{file}{A character string specifying the path to the file to be scanned.}
 
-\item{print_tar}{Logical; indicating whether to print the lines in a format suitable for tar loading. Default is \code{FALSE}.}
-
-\item{rm_tar_load}{Logical; indicating whether to remove remove lines with tar_load{tar_objects}. Users may load objects but they are not used in the report, removing these items will give a list of tar objects that are actually used in the analysis. Default is \code{TRUE}.}
+\item{rm_tar_load}{Logical; indicating whether to remove lines with `tar_load` commands. This is useful for identifying `tar_load` commands that are not used in the analysis, providing a list of `tar` objects that are actually used. Default is \code{TRUE}.}
 }
 \value{
 A character vector containing lines from the file matching the criteria specified.
 }
 \description{
-This function scans a file for lines containing a specific target string and performs optional manipulations on the lines.
+This function scans a file for lines containing specific target strings related to `tar_load` commands and performs optional manipulations on the lines, particularly focusing on removing `tar_load` commands for unused targets.
 }
 \examples{
 \dontrun{
-# Scan a file for lines containing "plt_mdl_" and "plt_agg" strings, remove lines containing "tar_read",
-# remove trailing spaces, and print lines in tar loading format.
-tar_scan_file("example.txt", "plt_mdl_|plt_agg"), rm_tar = TRUE, rm_spce = TRUE, print_tar = TRUE)
+# Scan a file for lines containing `tar_load` commands, remove lines with unused targets,
+# and print the lines in `tar_load` format.
+tar_scan_file("example.qmd", rm_tar_load = TRUE)
+
+# Example: Creating temporary files and scanning them
+temp_dir = tempdir()
+setwd(temp_dir)
+tar_lines = "tar_target(data_ob_1, fake_function_1(data_ob))\n
+tar_target(data_ob_2, fake_function_2(data_ob_1))\n
+tar_target(data_ob_3, fake_function_3(data_ob_2))\n
+tar_target(viz_ob_1, fake_function_4(data_ob_2))\n
+tar_target(viz_ob_2, fake_function_5(data_ob_3))"
+qmd_lines = "---
+title: 'An Example Dashboard'
+---
+```{r}
+tar_load(data_ob_2)
+tar_load(viz_ob_1)
+```
+A loaded object showing the data.
+```{r}
+data_ob_2
+```
+A loaded object.
+```{r}
+viz_ob_1
+```
+An unloaded object.
+```{r}
+viz_ob_2```"
+temp_tar_file = file.path(temp_dir, "_targets.R")
+writeLines(tar_lines, temp_tar_file)
+temp_r_file = file.path(temp_dir, "temp_r_file.R")
+writeLines(qmd_lines, temp_r_file)
+tar_scan_file(file = temp_r_file)
 }
 
 }
