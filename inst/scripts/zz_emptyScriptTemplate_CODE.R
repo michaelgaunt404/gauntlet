@@ -2,10 +2,13 @@
 #
 # DESC: This is script [[insert brief readme here]]
 #
-# By: mike gaunt, michael.gaunt@wsp.com
+# AUTHOR: Name, email@wsp.com
+#
+# STATUS: Working (Working/Deprecated)
 #
 # README: [[insert brief readme here]]
-#-------- [[insert brief readme here]]
+# README: --[[insert brief readme here]]
+# README: --[[insert brief readme here]]
 #
 # *please use 80 character margins
 #
@@ -13,24 +16,19 @@
 
 #library set-up=================================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#content in this section should be removed if in production - ok for dev
-library(tidyverse)
-library(gauntlet)
+#define all packages required to run script here
 
 #path set-up====================================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#content in this section should be removed if in production - ok for dev
+#define path(s) here in the in this section
 
 #source helpers/utilities=======================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#content in this section should be removed if in production - ok for dev
+#source or define functions required to run script here
 
 #source data====================================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#content in this section should be removed if in production - ok for dev
-#area to upload data with and to perform initial munging
-#please add test data here so that others may use/unit test these scripts
-
+#source all data required to run scrip here
 
 #main header====================================================================
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
