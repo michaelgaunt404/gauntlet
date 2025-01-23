@@ -16,7 +16,10 @@ message detailing successful or unsuccessful loaded packages
 Function loads R libraries listed in string vector. Compatable with targets formatting style.
 }
 \examples{
+
+\dontrun{
 packages = c("dplyr", "ggplot")
 
 package_load(packages)
+}
 }

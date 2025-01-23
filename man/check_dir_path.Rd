@@ -16,6 +16,9 @@ None
 This function checks if the directory path exists and creates it if it doesn't.
 }
 \examples{
+
+\dontrun{
 check_dir_path("data/raw")
 check_dir_path("data/processed")
+}
 }

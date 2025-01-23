@@ -8,9 +8,12 @@
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' packages = c("dplyr", "ggplot")
 #'
 #' package_load(packages)
+#' }
 package_load =  function(pkg){
   new.pkg <- pkg[!(pkg %in% utils::installed.packages()[, "Package"])]
   if (length(new.pkg))

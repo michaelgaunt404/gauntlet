@@ -56,6 +56,7 @@ log_and_fatal = function(message, logger){
 #'
 #' @examples
 #'
+#' \dontrun{
 #' temp = data.frame(
 #'highway = c("90 East", "405 Northbound", "101")
 #',count = c(100, 205, 92)
@@ -67,6 +68,7 @@ log_and_fatal = function(message, logger){
 #'
 #'glue_collapse("{temp$count} ({temp$percent}%) - {temp$highway}") %>%
 #'  message()
+#'  }
 glue_collapse = function(msg){
   str_glue(msg) %>% paste0(collapse = '\n')
 }

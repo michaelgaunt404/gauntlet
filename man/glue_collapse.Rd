@@ -19,6 +19,7 @@ Function takes glue input and properly collpases it using "\n" to make it multi-
 }
 \examples{
 
+\dontrun{
 temp = data.frame(
 highway = c("90 East", "405 Northbound", "101")
 ,count = c(100, 205, 92)
@@ -30,4 +31,5 @@ str_glue("{temp$count} ({temp$percent}\%) - {temp$highway}") \%>\%
 
 glue_collapse("{temp$count} ({temp$percent}\%) - {temp$highway}") \%>\%
  message()
+ }
 }

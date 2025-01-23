@@ -9,6 +9,8 @@
 #' @return This function generates and prints `@importFrom` statements for each
 #' package detected in the script.
 #'
+#' @importFrom magrittr %>%
+#'
 #' @examples
 #' ex_script <- "mtcars %>%
 #'    dplyr::mutate(
@@ -39,9 +41,6 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
   ) %>%
     sort()
 
-
-  # Check if packages were detected
-  pkg = "htmltools"
   if (length(packages) > 0) {
     message("Packages detected:")
     import_statements <- sapply(packages, function(pkg) {
@@ -52,11 +51,12 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
         unique() %>%
         sort()
 
-      paste("@importFrom"
+      paste("#' @importFrom"
             ,pkg
             ,paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
     })
-    cat(import_statements, sep = "\n")
+    cat(import_statements, "#' @importFrom magrittr %>%", sep = "\n")
+    # cat()
   }
   else {
     message("No packages were detected.")

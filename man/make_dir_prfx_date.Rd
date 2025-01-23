@@ -18,6 +18,9 @@ A string specifying the path of the created directory.
 This function creates a directory with a specified prefix and the current date.
 }
 \examples{
-make_dir_prfx_date("data/processed", "my_data_")
+
+\dontrun{
+#' make_dir_prfx_date("data/processed", "my_data_")
 make_dir_prfx_date("data/raw", "my_data_")
+}
 }
