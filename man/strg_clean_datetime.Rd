@@ -6,6 +6,9 @@
 \usage{
 strg_clean_datetime(strip = FALSE)
 }
+\arguments{
+\item{strip}{A boolean to indicate where or not to truncate the datetime string to 15 characters, default F.}
+}
 \value{
 character string of datetime using only underscores
 }
