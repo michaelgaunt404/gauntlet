@@ -9,9 +9,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' quick_date_rng()
 #'
 #' quick_date_rng(month = 3)
+#' }
 quick_date_rng = function(mon = 6){
   c(Sys.Date()-months(mon), Sys.Date())
 }

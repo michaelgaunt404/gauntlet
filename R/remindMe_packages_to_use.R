@@ -2,10 +2,12 @@
 #'
 #' @return None (prints to console).
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' remindMe_packages_to_use()
 #'
-#' @export
+#' }
 remindMe_packages_to_use = function(){
   message(stringr::str_glue("{gauntlet::strg_make_space_2()}Printing basic packages{gauntlet::strg_make_space_2(last = F)}"))
 

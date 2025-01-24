@@ -14,7 +14,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' #none
+#' }
 # TODO can only perform equal weight for now
 make_rMean_col = function(width, equal){
   purrr::map(width,

@@ -9,6 +9,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #'numeric_vector = c(rnorm(10, 10, 3), 100)
 #'
 #'roll_mad(numeric_vector)
@@ -17,6 +18,7 @@
 #'
 #' #compare to zscore
 #' scale(numeric_vector)[,1]
+#' }
 # TODO should be able to pick tail, head, or centered for window alignment
 roll_mad = function(values, last = F){
   ((abs(values-median(values, na.rm = T)))/

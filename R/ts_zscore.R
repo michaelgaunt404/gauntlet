@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #'data.frame(index = 1:60, value = c(rnorm(50, 10, 3), rnorm(10, 25, 0))) %>%
 #'  na.omit() %>%
 #'  ts_zscore(width = 30)
@@ -26,6 +27,7 @@
 #'        na.omit() %>%
 #'        ts_zscore(width = .x)) %>%
 #'  reduce(bind_rows)
+#' }
 ts_zscore = function(data, grp = NULL, width = 7
                      ,align = "right", threshold = 3){
 

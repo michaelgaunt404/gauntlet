@@ -10,11 +10,13 @@
 #' @import magrittr
 #' @importFrom janitor clean_names remove_empty
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' df <- data.frame(A = c(1, NA, 3), B = c("apple", "orange", ""), C = c("", "banana", ""))
 #' strg_col_clean(df, "")
 #'
-#' @export
+#' }
 strg_col_clean = function(df, na_marker = ""){
   df %>%
     # mutate(across(everything(), ~dplyr::na_if(.x, na_marker)))

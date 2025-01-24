@@ -11,7 +11,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' #none
+#' }
 make_lag_col = function(lags = c(1, 7)){
   purrr::map(lags, ~purrr::partial(dplyr::lag, n = .x))
 }

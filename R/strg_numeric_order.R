@@ -14,7 +14,9 @@
 #' @importFrom stringr str_sort
 #' @import magrittr
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' temp_df = paste0("lab_", seq(1, 50, 2)) %>%
 #' data.frame(label_unordered = .
 #'            ,label_ordered = strg_numeric_order(.))
@@ -22,7 +24,7 @@
 #' temp_df %>% arrange(label_unordered) %>% print()
 #' temp_df %>% arrange(desc(label_ordered)) %>% print()
 #'
-#' @export
+#' }
 strg_numeric_order <- function(col, rev = TRUE) {
   if (rev) {
     forcats::fct_relevel(

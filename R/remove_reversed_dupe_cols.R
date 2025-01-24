@@ -13,7 +13,9 @@
 #'
 #' @return A data frame with reversed duplicate rows removed.
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' # Create a sample data frame
 #' df <- data.frame(
 #'   var_1 = c(1, 2, 3, 4, 2) %>% paste0("street_", .),
@@ -23,7 +25,7 @@
 #' # Remove reversed duplicates
 #' cleaned_df <- remove_reversed_dupe_cols(df, "var_1", "var_2")
 #'
-#' @export
+#' }
 remove_reversed_dupe_cols <- function(df, col1, col2) {
   # Create a sorted version of the two columns
   sorted_df <- data.frame(

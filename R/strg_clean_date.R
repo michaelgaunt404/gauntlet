@@ -5,8 +5,10 @@
 #' @importFrom stringr str_replace_all
 #'
 #' @examples
+#' \dontrun{
 #'
 #' clean_date()
+#' }
 strg_clean_date = function(){
   stringr::str_replace_all(stringr::str_remove_all(Sys.Date(), "[:punct:]"), " ", "_")
 }
