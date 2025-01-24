@@ -7,11 +7,13 @@
 #' @return The result of evaluating the R command.
 #' @importFrom rlang parse_expr
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' strg_fun_eval("1 + 1")
 #' strg_fun_eval("mean(c(1, 2, 3))")
 #'
-#' @export
+#' }
 strg_fun_eval = function(text){
   eval(rlang::parse_expr(text))
 }

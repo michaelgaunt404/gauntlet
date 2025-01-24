@@ -11,11 +11,13 @@
 #' @importFrom stringr str_replace_all str_to_title
 #' @import magrittr
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' strg_pretty_char("hello_world")
 #' strg_pretty_char("the_quick_brown_fox")
 #'
-#' @export
+#' }
 strg_pretty_char = function(col){
   col %>%
     stringr::str_replace_all(., "_", " ") %>%

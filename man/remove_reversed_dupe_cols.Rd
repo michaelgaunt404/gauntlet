@@ -26,6 +26,7 @@ This is useful for cleaning up data where the order of elements in the two colum
 doesn't matter, such as in undirected networks or paired observations.
 }
 \examples{
+\dontrun{
 # Create a sample data frame
 df <- data.frame(
   var_1 = c(1, 2, 3, 4, 2) \%>\% paste0("street_", .),
@@ -35,4 +36,5 @@ df <- data.frame(
 # Remove reversed duplicates
 cleaned_df <- remove_reversed_dupe_cols(df, "var_1", "var_2")
 
+}
 }

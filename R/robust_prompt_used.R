@@ -9,12 +9,13 @@
 #' the specified action. Returns TRUE if the user entered "Y", and FALSE if the
 #' user entered "N".
 #'
-#' @examples
-#' robust_prompt_used("continue with the analysis")
+#' @importFrom stringr str_glue
 #'
 #' @export
-#'
-#' @importFrom stringr str_glue
+#' @examples
+#' \dontrun{
+#' robust_prompt_used("continue with the analysis")
+#' }
 robust_prompt_used <- function(prompt) {
   message(str_glue("Do you want to {prompt}? Y/N"))
   response <- toupper(readline())

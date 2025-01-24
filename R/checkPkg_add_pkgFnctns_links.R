@@ -11,6 +11,12 @@
 #' they contain. It then reads the script, identifies non-qualified function calls, and replaces them
 #' with their qualified counterparts if a match is found in the loaded packages.
 #'
+#' @importFrom dplyr mutate
+#' @importFrom stringr str_glue str_match_all str_replace_all
+#' @importFrom purrr map_df
+#'
+#' @export
+#'
 #' @examples
 #' library(dplyr)
 #' library(stringr)
@@ -19,19 +25,12 @@
 #' ex_script <- "mtcars %>%
 #'   mutate(
 #'   var_1 = Quantile(disp, probs = .6),
-#'          var_2 = str_glue('{disp} {hp}')
-#' )"
+#'          var_2 = str_glue('{disp} {hp}'))"
 #'
 #' # Write the example script to a temporary file
 #' temp_script <- tempfile(fileext = ".R")
 #' writeLines(ex_script, temp_script)
 #' checkPkg_add_pkgFnctns_links(temp_script)
-#'
-#' @importFrom dplyr mutate
-#' @importFrom stringr str_glue str_match_all str_replace_all
-#' @importFrom purrr map_df
-#'
-#' @export
 checkPkg_add_pkgFnctns_links = function(script){
   temp_pkg_fnct_loaded = sessionInfo()[["otherPkgs"]] %>%
     names() %>%
@@ -48,6 +47,7 @@ checkPkg_add_pkgFnctns_links = function(script){
   for (i in seq_along(lines)) {
     # Skip lines that start with #' or #
     if (grepl("^#'", lines[i]) || grepl("^#", lines[i])) {
+
       next
     }
 

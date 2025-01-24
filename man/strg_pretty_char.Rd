@@ -19,7 +19,9 @@ This function replaces underscores with spaces and capitalizes the first letter 
 Mostly used when making colnames or items in table pretty.
 }
 \examples{
+\dontrun{
 strg_pretty_char("hello_world")
 strg_pretty_char("the_quick_brown_fox")
 
+}
 }

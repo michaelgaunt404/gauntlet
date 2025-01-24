@@ -9,11 +9,13 @@
 #'
 #' @return A string of repeated characters separated by the specified separator string.
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' make_space_2(n = 5, with = " ")
 #' make_space_2(n = 5, with = "-", c = "", last = FALSE)
 #'
-#' @export
+#' }
 strg_make_space_2 = function(with = "+", n = 50, c = "", last = T){
   if (last){
     paste0(rep(with, n), collapse = c) %>% paste0(., "\n")

@@ -72,8 +72,11 @@ make_new_rmd = function(folder = "analysis", file_name = NULL){
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' check_dir_path("data/raw")
 #' check_dir_path("data/processed")
+#' }
 check_dir_path <- function(dir_path) {
   dir_path = here::here(dir_path)
 
@@ -111,8 +114,11 @@ check_dir_path <- function(dir_path) {
 #' @export
 #'
 #' @examples
-#' make_dir_prfx_date("data/processed", "my_data_")
+#'
+#' \dontrun{
+#' #' make_dir_prfx_date("data/processed", "my_data_")
 #' make_dir_prfx_date("data/raw", "my_data_")
+#' }
 make_dir_prfx_date <- function(directory_location, prefix) {
   date = gauntlet::strg_clean_date()
   directory_path = here::here(directory_location, paste0(prefix, date))

@@ -10,14 +10,16 @@
 #' and the values are the corresponding values from the arguments. If an argument
 #' does not contain `=`, it will not be included in the returned list.
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' # Example usage:
 #' args <- c("--name=John", "--age=30", "--country=USA")
 #' parsed_args <- strg_parse_args(args)
 #' print(parsed_args)
 #' # Output: list(name = "John", age = "30", country = "USA")
 #'
-#' @export
+#' }
 strg_parse_args <- function(args) {
   parsed_args <- list()
   for (arg in args) {

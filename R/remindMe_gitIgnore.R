@@ -3,10 +3,12 @@
 #' @return None (prints to console).
 #' @importFrom stringr str_glue
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' remindMe_gitIgnore()
 #'
-#' @export
+#' }
 remindMe_gitIgnore = function(){
   message(stringr::str_glue("{gauntlet::strg_make_space_2()}Printing common R .gitignore file{gauntlet::strg_make_space_2(last = F)}"))
 

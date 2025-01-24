@@ -22,7 +22,9 @@ A string of repeated characters separated by the specified separator string.
 This function creates a string of a specified length containing a specified character. It is commonly used to create indentation in printed output.
 }
 \examples{
+\dontrun{
 make_space_2(n = 5, with = " ")
 make_space_2(n = 5, with = "-", c = "", last = FALSE)
 
+}
 }

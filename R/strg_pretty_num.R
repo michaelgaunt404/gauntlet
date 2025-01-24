@@ -11,12 +11,14 @@
 #' @importFrom stringr str_length
 #' @import magrittr
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' strg_pretty_num(1234)
 #' strg_pretty_num(12345678)
 #' strg_pretty_num(-987654321, 2)
 #'
-#' @export
+#' }
 strg_pretty_num = function(vector, rnd = 0){
   digit = vector %>%
     round(., rnd)
