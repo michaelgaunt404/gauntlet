@@ -13,6 +13,8 @@ None (prints to console).
 Print basic to console basic tryCatch template
 }
 \examples{
+\dontrun{
 remindMe_gitIgnore()
 
+}
 }

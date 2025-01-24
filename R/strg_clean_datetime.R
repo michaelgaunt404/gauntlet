@@ -1,5 +1,7 @@
 #' Make a clean datetime string of current datetime with simple punctuation and syntax.
 #'
+#' @param strip A boolean to indicate where or not to truncate the datetime string to 15 characters, default F.
+#'
 #' @return character string of datetime using only underscores
 #' @export
 #' @importFrom stringr str_replace_all str_trunc

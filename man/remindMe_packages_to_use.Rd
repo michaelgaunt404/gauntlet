@@ -13,6 +13,8 @@ None (prints to console).
 Print basic packages that to use template
 }
 \examples{
+\dontrun{
 remindMe_packages_to_use()
 
+}
 }

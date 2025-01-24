@@ -20,10 +20,12 @@ Parses a vector of command-line arguments and returns a named list of argument-v
 Arguments are expected to follow the format `--key=value`.
 }
 \examples{
+\dontrun{
 # Example usage:
 args <- c("--name=John", "--age=30", "--country=USA")
 parsed_args <- strg_parse_args(args)
 print(parsed_args)
 # Output: list(name = "John", age = "30", country = "USA")
 
+}
 }

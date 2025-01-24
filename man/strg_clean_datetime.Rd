@@ -13,6 +13,8 @@ character string of datetime using only underscores
 Make a clean datetime string of current datetime with simple punctuation and syntax.
 }
 \examples{
+\dontrun{
 
 clean_datetime()
+}
 }

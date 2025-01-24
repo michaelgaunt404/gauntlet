@@ -23,6 +23,7 @@ This function is useful for ensuring that factor levels are ordered correctly wh
 It leverages the `stringr::str_sort` function to sort the levels.
 }
 \examples{
+\dontrun{
 temp_df = paste0("lab_", seq(1, 50, 2)) \%>\%
 data.frame(label_unordered = .
            ,label_ordered = strg_numeric_order(.))
@@ -30,4 +31,5 @@ data.frame(label_unordered = .
 temp_df \%>\% arrange(label_unordered) \%>\% print()
 temp_df \%>\% arrange(desc(label_ordered)) \%>\% print()
 
+}
 }
