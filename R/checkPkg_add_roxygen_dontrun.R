@@ -1,3 +1,36 @@
+#' Ensure \dontrun{} Wrapping Around @examples
+#'
+#' This function checks all R script files in a specified folder to ensure that
+#' all `@examples` sections in Roxygen documentation are wrapped in \dontrun{}.
+#' It ensures proper package building and simplifies function documentation
+#' development for users.
+#'
+#' @param folder Character. The folder containing the R scripts to process. Defaults to "R".
+#' @param test_individually Logical. If TRUE, prompts the user to press a key to continue
+#' after processing each file. Defaults to TRUE.
+#'
+#' @details The function performs the following checks on each script:
+#' - Ensures the script contains only one function.
+#' - Verifies that Roxygen documentation is present.
+#' - Checks if an `@examples` section exists.
+#' - Ensures \dontrun{} is not already present around the `@examples` section.
+#'
+#' If all conditions are met, the function automatically adds \dontrun{} around the `@examples` section
+#' and relocates the `@export` tag if it appears after the `@examples` section.
+#'
+#' @importFrom purrr map
+#' @importFrom stringr str_detect
+#' @importFrom dplyr %>%
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming you have an "R" folder with R script files:
+#' checkPkg_add_roxygen_dontrun(folder = "R", test_individually = TRUE)
+#'
+#' # To process another folder:
+#' checkPkg_add_roxygen_dontrun(folder = "path/to/your/folder", test_individually = FALSE)
+#' }
 checkPkg_add_roxygen_dontrun = function(folder = "R", test_individually = T) {
   # Check if the folder exists
   if (!dir.exists(folder)){stop("The specified folder does not exist.")}

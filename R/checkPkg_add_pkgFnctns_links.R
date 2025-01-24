@@ -11,7 +11,9 @@
 #' they contain. It then reads the script, identifies non-qualified function calls, and replaces them
 #' with their qualified counterparts if a match is found in the loaded packages.
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' library(stringr)
 #' library(DescTools)
@@ -31,7 +33,6 @@
 #' @importFrom stringr str_glue str_match_all str_replace_all
 #' @importFrom purrr map_df
 #'
-#' @export
 checkPkg_add_pkgFnctns_links = function(script){
   temp_pkg_fnct_loaded = sessionInfo()[["otherPkgs"]] %>%
     names() %>%
@@ -48,6 +49,7 @@ checkPkg_add_pkgFnctns_links = function(script){
   for (i in seq_along(lines)) {
     # Skip lines that start with #' or #
     if (grepl("^#'", lines[i]) || grepl("^#", lines[i])) {
+#' }
       next
     }
 
