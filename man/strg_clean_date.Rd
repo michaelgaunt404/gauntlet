@@ -13,6 +13,8 @@ character string of date without bad punctuation
 Make a clean date string of current date with simple punctuation and syntax.
 }
 \examples{
+\dontrun{
 
 clean_date()
+}
 }

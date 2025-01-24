@@ -16,7 +16,9 @@ The result of evaluating the R command.
 Takes a string and evaluates it as an R command.
 }
 \examples{
+\dontrun{
 strg_fun_eval("1 + 1")
 strg_fun_eval("mean(c(1, 2, 3))")
 
+}
 }

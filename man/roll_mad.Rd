@@ -18,6 +18,7 @@ returns a single MAD value for the last value in vector
 Function computes MAD statistic(s) for numeric vector. All values in vector are used to create MAD statistic. MAD values for all or last entry alone can be returned.
 }
 \examples{
+\dontrun{
 numeric_vector = c(rnorm(10, 10, 3), 100)
 
 roll_mad(numeric_vector)
@@ -26,4 +27,5 @@ roll_mad(numeric_vector, last = T)
 
 #compare to zscore
 scale(numeric_vector)[,1]
+}
 }

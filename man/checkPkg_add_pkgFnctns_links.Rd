@@ -27,12 +27,10 @@ library(DescTools)
 ex_script <- "mtcars \%>\%
   mutate(
   var_1 = Quantile(disp, probs = .6),
-         var_2 = str_glue('{disp} {hp}')
-)"
+         var_2 = str_glue('{disp} {hp}'))"
 
 # Write the example script to a temporary file
 temp_script <- tempfile(fileext = ".R")
 writeLines(ex_script, temp_script)
 checkPkg_add_pkgFnctns_links(temp_script)
-
 }

@@ -18,7 +18,9 @@ The cleaned data frame.
 This function cleans a data frame by removing empty rows and columns, converting column names to snake_case, and replacing a specified value with NA.
 }
 \examples{
+\dontrun{
 df <- data.frame(A = c(1, NA, 3), B = c("apple", "orange", ""), C = c("", "banana", ""))
 strg_col_clean(df, "")
 
+}
 }

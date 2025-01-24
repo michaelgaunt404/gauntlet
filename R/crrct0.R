@@ -8,7 +8,6 @@
 #' @export
 #'
 #' @examples
-#' @examples
 #'
 #' \dontrun{
 #'data.frame(group = c(rep("A", 4), rep("B", 4))

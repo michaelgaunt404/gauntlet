@@ -18,8 +18,10 @@ The pretty number string.
 This function formats a number to make it more readable. Large numbers are expressed in millions or billions and small numbers are not rounded.
 }
 \examples{
+\dontrun{
 strg_pretty_num(1234)
 strg_pretty_num(12345678)
 strg_pretty_num(-987654321, 2)
 
+}
 }

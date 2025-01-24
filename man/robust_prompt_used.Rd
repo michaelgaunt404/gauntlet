@@ -20,6 +20,7 @@ to perform a specific action. The function accepts the user's response and
 handles invalid input by prompting the user again.
 }
 \examples{
+\dontrun{
 robust_prompt_used("continue with the analysis")
-
+}
 }
