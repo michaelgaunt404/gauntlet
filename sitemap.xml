@@ -9,7 +9,9 @@
 <url><loc>/reference/auto_make_lag_col.html</loc></url>
 <url><loc>/reference/auto_make_rMean_col.html</loc></url>
 <url><loc>/reference/checkPkg_add_pkgFnctns_links.html</loc></url>
+<url><loc>/reference/checkPkg_add_roxygen_dontrun.html</loc></url>
 <url><loc>/reference/checkPkg_make_importFrom_fnctn_statments.html</loc></url>
+<url><loc>/reference/checkPkg_map_functions_and_scripts.html</loc></url>
 <url><loc>/reference/checkPkg_scrpt_fnctn_names.html</loc></url>
 <url><loc>/reference/check_dir_path.html</loc></url>
 <url><loc>/reference/count_percent_zscore.html</loc></url>
