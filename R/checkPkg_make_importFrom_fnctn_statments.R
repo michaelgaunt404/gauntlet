@@ -25,7 +25,8 @@
 #' @export
 checkPkg_make_importFrom_fnctn_statments <- function(script) {
   # Read the script lines
-  script_lines <- readLines(script)
+  script_lines <- readLines(script) %>%
+    .[!stringr::str_detect(., "#'")]
 
   # Split script into parts by '(' and whitespace
   split_parts <- unlist(strsplit(script_lines, "\\(|\\s+"))
@@ -39,7 +40,8 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
       gsub(".*\\{", "", .) %>%
       gsub("[[:punct:]]", "", .)
   ) %>%
-    sort()
+    sort() %>%
+    .[.!=""]
 
   if (length(packages) > 0) {
     message("Packages detected:")
@@ -51,6 +53,7 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
         unique() %>%
         sort()
 
+
       paste("#' @importFrom"
             ,pkg
             ,paste(gsub(paste0(pkg, "::"), "", functions), collapse = " "))
@@ -61,4 +64,5 @@ checkPkg_make_importFrom_fnctn_statments <- function(script) {
   else {
     message("No packages were detected.")
   }
+  return(import_statements)
 }

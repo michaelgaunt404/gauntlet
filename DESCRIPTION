@@ -37,5 +37,6 @@ LazyData: true
 RoxygenNote: 7.3.1
 URL: https://michaelgaunt404.github.io/gauntlet/
 Suggests: 
-    knitr
+    knitr,
+    visNetwork
 VignetteBuilder: knitr
