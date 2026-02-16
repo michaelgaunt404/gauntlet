@@ -11,7 +11,7 @@
 #' \dontrun{
 #' # Scan a file for lines containing `tar_load` commands, remove lines with unused targets,
 #' # and print the lines in `tar_load` format.
-#' tar_scan_file("example.qmd", rm_tar_load = TRUE)
+#' targets_scan_file("example.qmd", rm_tar_load = TRUE)
 #'
 #' # Example: Creating temporary files and scanning them
 #' temp_dir = tempdir()
@@ -43,14 +43,14 @@
 #' writeLines(tar_lines, temp_tar_file)
 #' temp_r_file = file.path(temp_dir, "temp_r_file.R")
 #' writeLines(qmd_lines, temp_r_file)
-#' tar_scan_file(file = temp_r_file)
+#' targets_scan_file(file = temp_r_file)
 #' }
 #'
 #' @export
 #'
 #' @importFrom stringr str_detect str_glue
 #'
-tar_scan_file = function(file, rm_tar_load = TRUE){
+targets_scan_file_for_tar_objs = function(file, rm_tar_load = TRUE){
 
   index_tar_ref = readLines("_targets.r") %>%
     .[stringr::str_detect(., ".*tar_target\\(")] %>%
